@@ -1,9 +1,15 @@
 class Ship():
-    def __init__(self, owner):
-        self.orientation = ''
+    def __init__(self, owner, orientation='h'):
+        self.orientation = orientation
         self.segments = []
         self.owner = owner
         self.sunk = False
+    
+    def rotate(self):
+        if self.orientation == 'h':
+            self.orientation = 'v'
+        elif self.orientation == 'v':
+            self.orientation = 'h'
 
 
 class Carrier(Ship):
