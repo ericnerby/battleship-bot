@@ -54,12 +54,12 @@ class Destroyer(Ship):
 class Submarine(Ship):
     HORIZONTAL_STRING_REPS = [
         ("<=", "<x"),
-        ("==", "=x"),
+        ("^=", "^x"),
         ("=>", "x>"),
     ]
     VERTICAL_STRING_REPS = [
         ("/\\", "/X"),
-        ("||", "|X"),
+        ("|>", "|X"),
         ("\\/", "\\X"),
     ]
 
