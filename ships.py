@@ -1,3 +1,23 @@
+"""
+Contains Ship and its subclasses for a Battleship game.
+
+Classes
+-------
+Ship
+    A class to represent a ship on the board.
+
+Carrier
+    Subclass of ship with Carrier attributes filled in.
+Battleship
+    Subclass of ship with Battleship attributes filled in.
+Destroyer
+    Subclass of ship with Destroyer attributes filled in.
+Submarine
+    Subclass of ship with Submarine attributes filled in.
+PTBoat
+    Subclass of ship with PTBoat attributes filled in.
+"""
+
 from segments import Segment
 
 
@@ -31,13 +51,13 @@ class Ship():
     rotate():
         Change orientation of the Ship from 'v' to 'h' or 'h' to 'v'
     check_sunk():
-        Checks to see if ship is sunk based on all segments being hit
+        Check to see if ship is sunk based on all segments being hit
     """
 
     def __init__(self, owner, ship_type, horizontal_string_reps=[],
                  vertical_string_reps=[], *, orientation='h'):
         """
-        Constructs attributes for Ship object
+        Construct attributes for Ship object
 
         Parameters
         ----------
@@ -52,7 +72,7 @@ class Ship():
             vertical_string_reps : list of tuples, optional
                 should generally be passed by __init__ in subclass
                 (default is [])
-            orientation : str, optional
+            orientation : str, optional, keyword-only
                 'h' for horizontal, 'v' for vertical (default is 'h')
         """
         self.owner = owner
@@ -78,7 +98,7 @@ class Ship():
 
     def rotate(self):
         """
-        Change orientation of the Ship from 'v' to 'h' or 'h' to 'v'
+        Change orientation of the Ship from 'v' to 'h' or 'h' to 'v'.
 
         Flips the orientation of the Ship based on its current
         orientation.  This method also changes the string
@@ -106,7 +126,7 @@ class Ship():
 
     def check_sunk(self):
         """
-        Checks to see if ship is sunk based on all segments being hit.
+        Check to see if ship is sunk based on all segments being hit.
 
         Checks 'hit' attribute of each Segment in segments list and
         if all are True, sets 'sunk' attribute of ship to True.
@@ -124,12 +144,26 @@ class Ship():
         return self.sunk
 
     def __len__(self):
-        """Returns length of 'segments' attribute for ship length"""
+        """Return length of 'segments' attribute for ship length."""
         return len(self.segments)
 
 
 class Carrier(Ship):
-    def __init__(self, owner, orientation='h'):
+    """
+    Subclass of ship with Carrier attributes filled in.
+    """
+
+    def __init__(self, owner, *, orientation='h'):
+        """
+        Construct attributes for Carrier subclass of Ship.
+
+        Parameters
+        ----------
+            owner : Player object
+                object which owns the ship
+            orientation : str, optional, keyword-only
+                'h' for horizontal, 'v' for vertical (default is 'h')
+        """
         horizontal_string_reps = [
             ("[=", "[x"),
             ("==", "=x"),
@@ -149,7 +183,21 @@ class Carrier(Ship):
 
 
 class Battleship(Ship):
-    def __init__(self, owner, orientation='h'):
+    """
+    Subclass of ship with Battleship attributes filled in.
+    """
+
+    def __init__(self, owner, *, orientation='h'):
+        """
+        Construct attributes for Carrier subclass of Ship.
+
+        Parameters
+        ----------
+            owner : Player object
+                object which owns the ship
+            orientation : str, optional, keyword-only
+                'h' for horizontal, 'v' for vertical (default is 'h')
+        """
         horizontal_string_reps = [
             ("<=", "<x"),
             ("==", "=x"),
@@ -167,7 +215,21 @@ class Battleship(Ship):
 
 
 class Destroyer(Ship):
-    def __init__(self, owner, orientation='h'):
+    """
+    Subclass of ship with Destroyer attributes filled in.
+    """
+
+    def __init__(self, owner, *, orientation='h'):
+        """
+        Construct attributes for Carrier subclass of Ship.
+
+        Parameters
+        ----------
+            owner : Player object
+                object which owns the ship
+            orientation : str, optional, keyword-only
+                'h' for horizontal, 'v' for vertical (default is 'h')
+        """
         horizontal_string_reps = [
             ("<=", "<x"),
             ("==", "=x"),
@@ -183,7 +245,21 @@ class Destroyer(Ship):
 
 
 class Submarine(Ship):
-    def __init__(self, owner, orientation='h'):
+    """
+    Subclass of ship with Carrier attributes filled in.
+    """
+
+    def __init__(self, owner, *, orientation='h'):
+        """
+        Construct attributes for Carrier subclass of Ship.
+
+        Parameters
+        ----------
+            owner : Player object
+                object which owns the ship
+            orientation : str, optional, keyword-only
+                'h' for horizontal, 'v' for vertical (default is 'h')
+        """
         horizontal_string_reps = [
             ("<=", "<x"),
             ("^=", "^x"),
@@ -199,7 +275,21 @@ class Submarine(Ship):
 
 
 class PTBoat(Ship):
-    def __init__(self, owner, orientation='h'):
+    """
+    Subclass of ship with Carrier attributes filled in.
+    """
+
+    def __init__(self, owner, *, orientation='h'):
+        """
+        Construct attributes for Carrier subclass of Ship.
+
+        Parameters
+        ----------
+            owner : Player object
+                object which owns the ship
+            orientation : str, optional, keyword-only
+                'h' for horizontal, 'v' for vertical (default is 'h')
+        """
         horizontal_string_reps = [
             ("<=", "<x"),
             ("=]", "x]"),

@@ -1,3 +1,13 @@
+"""
+Contains the Segment class to use with the ships module.
+
+Classes
+-------
+Segment
+    A class to represent an individual segment of a ship.
+"""
+
+
 class Segment():
     """
     A class to represent an individual segment of a ship.
