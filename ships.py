@@ -1,3 +1,6 @@
+from segments import Segment
+
+
 class Ship():
     """A Ship object represents one ship on the board, along with its
     segments and string representation for display when necessary."""
@@ -12,6 +15,8 @@ class Ship():
         self.sunk = False
         self._assign_segments()
     
+    """Switch the orientation of the ship
+    and its segment string representations"""
     def rotate(self):
         if self.orientation == 'h':
             self.orientation = 'v'
@@ -24,6 +29,7 @@ class Ship():
                                             self.horizontal_string_reps):
                 segment.string_rep_tup = segment_rep
     
+    """Build the segments for a ship based on its string representation list"""
     def _assign_segments(self):
         if self.orientation == 'h':
             for segment in self.horizontal_string_reps:
@@ -32,6 +38,7 @@ class Ship():
             for segment in self.vertical_string_reps:
                 self.segments.append(Segment(segment, self))
     
+    """Return the length of segments when checking length of a Ship instance"""
     def __len__(self):
         return len(self.segments)
 
@@ -119,21 +126,3 @@ class PTBoat(Ship):
         ]
         super().__init__(owner, 'PT Boat', HORIZONTAL_STRING_REPS,
                          VERTICAL_STRING_REPS, orientation)
-
-
-class Segment():
-    """Each Segment has a location and a string
-    representation and belongs to a certain ship"""
-    def __init__(self, string_rep_tup, ship, location=None):
-        self.string_rep_tup = string_rep_tup
-        self.ship = ship
-        self.location = location
-        self.hit = False
-    
-    """Return the appropriate ASCII representation of
-    the segment based on whether or not it's been hit."""
-    def __str__(self):
-        if self.hit:
-            return self.string_rep_tup[1]
-        else:
-            return self.string_rep_tup[0]
