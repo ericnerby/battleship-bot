@@ -54,8 +54,8 @@ class Ship():
         Check to see if ship is sunk based on all segments being hit
     """
 
-    def __init__(self, owner, ship_type, horizontal_string_reps=[],
-                 vertical_string_reps=[], *, orientation='h'):
+    def __init__(self, owner, ship_type, horizontal_string_reps,
+                 vertical_string_reps, *, orientation='h'):
         """
         Construct attributes for Ship object
 
