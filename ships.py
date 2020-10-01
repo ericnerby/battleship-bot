@@ -1,21 +1,23 @@
 """
 Contains Ship and its subclasses for a Battleship game.
 
+The Ship class keeps segments grouped appropriately and uses the
+segments to determine whether a ship is sunk. It also creates the
+segments with the appropriate string representations that match the 
+class of the ship.
+
 Classes
 -------
 Ship
     A class to represent a ship on the board.
 
+Subclasses of Ship
+------------------
 Carrier
-    Subclass of ship with Carrier attributes filled in.
 Battleship
-    Subclass of ship with Battleship attributes filled in.
 Destroyer
-    Subclass of ship with Destroyer attributes filled in.
 Submarine
-    Subclass of ship with Submarine attributes filled in.
 PTBoat
-    Subclass of ship with PTBoat attributes filled in.
 """
 
 from segments import Segment
@@ -44,14 +46,7 @@ class Ship():
     segments : list of Segment objects
         a list containing each Segment of the Ship
     sunk: Boolean
-        indicates whether the Ship is sunk
-
-    Methods
-    -------
-    rotate():
-        Change orientation of the Ship from 'v' to 'h' or 'h' to 'v'
-    check_sunk():
-        Check to see if ship is sunk based on all segments being hit
+        indicates whether the Ship instance is sunk
     """
 
     def __init__(self, owner, ship_type, horizontal_string_reps,
@@ -68,10 +63,8 @@ class Ship():
                 example: 'PT Boat'
             horizontal_string_reps : list of tuples, optional
                 should generally be passed by __init__ in subclass
-                (default is [])
             vertical_string_reps : list of tuples, optional
                 should generally be passed by __init__ in subclass
-                (default is [])
             orientation : str, optional, keyword-only
                 'h' for horizontal, 'v' for vertical (default is 'h')
         """
@@ -184,12 +177,12 @@ class Carrier(Ship):
 
 class Battleship(Ship):
     """
-    Subclass of ship with Battleship attributes filled in.
+    Subclass of Ship with Battleship attributes filled in.
     """
 
     def __init__(self, owner, *, orientation='h'):
         """
-        Construct attributes for Carrier subclass of Ship.
+        Construct attributes for Battleship subclass of Ship.
 
         Parameters
         ----------
@@ -216,12 +209,12 @@ class Battleship(Ship):
 
 class Destroyer(Ship):
     """
-    Subclass of ship with Destroyer attributes filled in.
+    Subclass of Ship with Destroyer attributes filled in.
     """
 
     def __init__(self, owner, *, orientation='h'):
         """
-        Construct attributes for Carrier subclass of Ship.
+        Construct attributes for Destroyer subclass of Ship.
 
         Parameters
         ----------
@@ -246,12 +239,12 @@ class Destroyer(Ship):
 
 class Submarine(Ship):
     """
-    Subclass of ship with Carrier attributes filled in.
+    Subclass of Ship with Submarine attributes filled in.
     """
 
     def __init__(self, owner, *, orientation='h'):
         """
-        Construct attributes for Carrier subclass of Ship.
+        Construct attributes for Submarine subclass of Ship.
 
         Parameters
         ----------
@@ -276,12 +269,12 @@ class Submarine(Ship):
 
 class PTBoat(Ship):
     """
-    Subclass of ship with Carrier attributes filled in.
+    Subclass of Ship with PTBoat attributes filled in.
     """
 
     def __init__(self, owner, *, orientation='h'):
         """
-        Construct attributes for Carrier subclass of Ship.
+        Construct attributes for PTBoat subclass of Ship.
 
         Parameters
         ----------

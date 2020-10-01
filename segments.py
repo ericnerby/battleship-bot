@@ -1,16 +1,18 @@
 """
 Contains the Segment class to use with the ships module.
 
+Segments are where locations are tracked and hits are registered.
+
 Classes
 -------
 Segment
-    A class to represent an individual segment of a ship.
+    A class to represent a segment of a Ship instance.
 """
 
 
 class Segment():
     """
-    A class to represent an individual segment of a ship.
+    A class to represent a segment of a Ship instance.
 
     Attributes
     ----------
@@ -18,15 +20,10 @@ class Segment():
         tuple with two strings that visually represent the section
         before and after a hit.
     ship : Ship object
-        the Ship object that owns the Segment
+        the Ship object that owns the segment
     location : TBD
     hit : Boolean
-        indicates whether the Segment has been hit
-
-    Methods
-    -------
-    register_segment_hit():
-        Changes 'hit' attribute to True and calls additional checks
+        indicates whether the Segment instance has been hit
     """
     def __init__(self, string_rep_tup, ship, location=None):
         """
@@ -38,7 +35,7 @@ class Segment():
                 tuple with two strings that visually represent the
                 section before and after a hit.
             ship : Ship object
-                thie Ship object that owns the Segment
+                the Ship object that owns the segment
             location : TBD
         """
         self.string_rep_tup = string_rep_tup
@@ -51,13 +48,13 @@ class Segment():
         Changes 'hit' attribute to True and calls additional checks.
 
         After the 'hit' attribute is set to True on the current
-        Segment, this method calls the check_sunk() method on the
-        Ship owning the Segment.  This method then returns the return
-        value from the parent Ship's method to indicate whether the
-        Ship was sunk.
+        Segment instance, this method calls the check_sunk() method on
+        the Ship instance owning the segment.  This method then returns
+        the return value from the parent Ship's method to indicate
+        whether the Ship instance was sunk.
 
-        IMPORTANT: Running this method on a Segment that has already been hit
-        raises a TypeError.
+        IMPORTANT: Running this method on a Segment instance that has
+        already been hit raises a TypeError.
 
         Parameters
         ----------
@@ -65,7 +62,7 @@ class Segment():
 
         Returns
         -------
-        Boolean - indicates whether the ship was sunk
+        Boolean - indicates whether the Ship instance was sunk
         """
         if not self.hit:
             self.hit = True
@@ -77,9 +74,13 @@ class Segment():
                             + " since it is already marked as hit.")
 
     def __str__(self):
-        """Returns the appropriate visual string representation of the
+        """Return the appropriate visual string representation of the
         segment based on whether or not it's been hit."""
         if self.hit:
             return self.string_rep_tup[1]
         else:
             return self.string_rep_tup[0]
+    
+    def __repr__(self):
+        """Return a string identifying key attributes of segment"""
+        return "Segment located at " + self.location
