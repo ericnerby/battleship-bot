@@ -2,10 +2,59 @@ from segments import Segment
 
 
 class Ship():
-    """A Ship object represents one ship on the board, along with its
-    segments and string representation for display when necessary."""
+    """
+    A class to represent a ship on the board.
+
+    Attributes
+    ----------
+    owner : Player object
+        the object representing who owns the ship
+    ship_type : str
+        indicates the type of ship for reference in messages
+    horizontal_string_reps : list of tuples
+        a list of tuples that contain string representations for
+        hit and not hit segments of the Ship when horizontal
+    vertical_string_reps : list of tuples
+        a list of tuples that contain string representations for
+        hit and not hit segments of the Ship when vertical
+    orientation : str
+        orientation of the Ship on the board
+            'h' for horizontal
+            'v' for vertical
+    segments : list of Segment objects
+        a list containing each Segment of the Ship
+    sunk: Boolean
+        indicates whether the Ship is sunk
+
+    Methods
+    -------
+    rotate():
+        Change orientation of the Ship from 'v' to 'h' or 'h' to 'v'
+    check_sunk():
+        Checks to see if ship is sunk based on all segments being hit
+    """
+
     def __init__(self, owner, ship_type, horizontal_string_reps=[],
-                 vertical_string_reps=[], orientation='h'):
+                 vertical_string_reps=[], *, orientation='h'):
+        """
+        Constructs attributes for Ship object
+
+        Parameters
+        ----------
+            owner : Player object
+                object which owns the ship
+            ship_type : str
+                a string representing the type of ship
+                example: 'PT Boat'
+            horizontal_string_reps : list of tuples, optional
+                should generally be passed by __init__ in subclass
+                (default is [])
+            vertical_string_reps : list of tuples, optional
+                should generally be passed by __init__ in subclass
+                (default is [])
+            orientation : str, optional
+                'h' for horizontal, 'v' for vertical (default is 'h')
+        """
         self.owner = owner
         self.ship_type = ship_type
         self.horizontal_string_reps = horizontal_string_reps
@@ -14,10 +63,36 @@ class Ship():
         self.segments = []
         self.sunk = False
         self._assign_segments()
-    
-    """Switch the orientation of the ship
-    and its segment string representations"""
+
+    def _assign_segments(self):
+        """
+        Based on the string_reps and orientation, creates and assigns
+        Segment objects to the segments list.
+        """
+        if self.orientation == 'h':
+            for segment in self.horizontal_string_reps:
+                self.segments.append(Segment(segment, self))
+        elif self.orientation == 'v':
+            for segment in self.vertical_string_reps:
+                self.segments.append(Segment(segment, self))
+
     def rotate(self):
+        """
+        Change orientation of the Ship from 'v' to 'h' or 'h' to 'v'
+
+        Flips the orientation of the Ship based on its current
+        orientation.  This method also changes the string
+        representations of the segments to match the newly assigned
+        orientation.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         if self.orientation == 'h':
             self.orientation = 'v'
             for segment, segment_rep in zip(self.segments,
@@ -28,110 +103,110 @@ class Ship():
             for segment, segment_rep in zip(self.segments,
                                             self.horizontal_string_reps):
                 segment.string_rep_tup = segment_rep
-    
-    """Build the segments for a ship based on its string representation list"""
-    def _assign_segments(self):
-        if self.orientation == 'h':
-            for segment in self.horizontal_string_reps:
-                self.segments.append(Segment(segment, self))
-        elif self.orientation == 'v':
-            for segment in self.vertical_string_reps:
-                self.segments.append(Segment(segment, self))
-    
-    """Runs every time a hit is registered on a segment to see if all
-    segments are hit.
-    If all segments are hit, the Ship instance's sunk value is made true.
-    Returns a boolean indicating whether the hit resulted
-    in a sunken ship."""
+
     def check_sunk(self):
+        """
+        Checks to see if ship is sunk based on all segments being hit.
+
+        Checks 'hit' attribute of each Segment in segments list and
+        if all are True, sets 'sunk' attribute of ship to True.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Boolean - indicates whether the ship was sunk
+        """
         if all([segment.hit for segment in self.segments]):
             self.sunk = True
         return self.sunk
-    
-    """Return length of segments when checking length of a Ship instance"""
+
     def __len__(self):
+        """Returns length of 'segments' attribute for ship length"""
         return len(self.segments)
 
 
 class Carrier(Ship):
     def __init__(self, owner, orientation='h'):
-        HORIZONTAL_STRING_REPS = [
+        horizontal_string_reps = [
             ("[=", "[x"),
             ("==", "=x"),
             ("#=", "#x"),
             ("==", "=x"),
             ("=]", "x]"),
         ]
-        VERTICAL_STRING_REPS = [
+        vertical_string_reps = [
             ("[]", "[X"),
             ("||", "|X"),
             ("#|", "#X"),
             ("||", "|X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'Carrier', HORIZONTAL_STRING_REPS,
-                         VERTICAL_STRING_REPS, orientation)
+        super().__init__(owner, 'Carrier', horizontal_string_reps,
+                         vertical_string_reps, orientation=orientation)
 
 
 class Battleship(Ship):
     def __init__(self, owner, orientation='h'):
-        HORIZONTAL_STRING_REPS = [
+        horizontal_string_reps = [
             ("<=", "<x"),
             ("==", "=x"),
             ("==", "=x"),
             ("=]", "x]"),
         ]
-        VERTICAL_STRING_REPS = [
+        vertical_string_reps = [
             ("/\\", "/X"),
             ("||", "|X"),
             ("||", "|X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'Battleship', HORIZONTAL_STRING_REPS,
-                         VERTICAL_STRING_REPS, orientation)
+        super().__init__(owner, 'Battleship', horizontal_string_reps,
+                         vertical_string_reps, orientation=orientation)
 
 
 class Destroyer(Ship):
     def __init__(self, owner, orientation='h'):
-        HORIZONTAL_STRING_REPS = [
+        horizontal_string_reps = [
             ("<=", "<x"),
             ("==", "=x"),
             ("=]", "x]"),
         ]
-        VERTICAL_STRING_REPS = [
+        vertical_string_reps = [
             ("/\\", "/X"),
             ("||", "|X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'Destroyer', HORIZONTAL_STRING_REPS,
-                         VERTICAL_STRING_REPS, orientation)
+        super().__init__(owner, 'Destroyer', horizontal_string_reps,
+                         vertical_string_reps, orientation=orientation)
 
 
 class Submarine(Ship):
     def __init__(self, owner, orientation='h'):
-        HORIZONTAL_STRING_REPS = [
+        horizontal_string_reps = [
             ("<=", "<x"),
             ("^=", "^x"),
             ("=>", "x>"),
         ]
-        VERTICAL_STRING_REPS = [
+        vertical_string_reps = [
             ("/\\", "/X"),
             ("|>", "|X"),
             ("\\/", "\\X"),
         ]
-        super().__init__(owner, 'Submarine', HORIZONTAL_STRING_REPS,
-                         VERTICAL_STRING_REPS, orientation)
+        super().__init__(owner, 'Submarine', horizontal_string_reps,
+                         vertical_string_reps, orientation=orientation)
 
 
 class PTBoat(Ship):
     def __init__(self, owner, orientation='h'):
-        HORIZONTAL_STRING_REPS = [
+        horizontal_string_reps = [
             ("<=", "<x"),
             ("=]", "x]"),
         ]
-        VERTICAL_STRING_REPS = [
+        vertical_string_reps = [
             ("/\\", "/X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'PT Boat', HORIZONTAL_STRING_REPS,
-                         VERTICAL_STRING_REPS, orientation)
+        super().__init__(owner, 'PT Boat', horizontal_string_reps,
+                         vertical_string_reps, orientation=orientation)
