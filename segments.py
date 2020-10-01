@@ -14,3 +14,15 @@ class Segment():
             return self.string_rep_tup[1]
         else:
             return self.string_rep_tup[0]
+    
+    """Register a hit on a Segment and call the function from its
+    Ship that checks if the ship was sunk.
+    Return the result indicating whether the Ship was sunk."""
+    def register_segment_hit(self):
+        if self.hit == False:
+            self.hit = True
+            return self.ship.check_sunk()
+        else:
+            raise TypeError("Cannot register a hit on "
+                            + self
+                            + " since it is already marked as hit.")

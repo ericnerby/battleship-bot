@@ -38,7 +38,17 @@ class Ship():
             for segment in self.vertical_string_reps:
                 self.segments.append(Segment(segment, self))
     
-    """Return the length of segments when checking length of a Ship instance"""
+    """Runs every time a hit is registered on a segment to see if all
+    segments are hit.
+    If all segments are hit, the Ship instance's sunk value is made true.
+    Returns a boolean indicating whether the hit resulted
+    in a sunken ship."""
+    def check_sunk(self):
+        if all([segment.hit for segment in self.segments]):
+            self.sunk = True
+        return self.sunk
+    
+    """Return length of segments when checking length of a Ship instance"""
     def __len__(self):
         return len(self.segments)
 
