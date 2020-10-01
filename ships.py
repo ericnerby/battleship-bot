@@ -91,7 +91,6 @@ class Battleship(Ship):
                          VERTICAL_STRING_REPS, orientation)
 
 
-
 class Destroyer(Ship):
     def __init__(self, owner, orientation='h'):
         HORIZONTAL_STRING_REPS = [

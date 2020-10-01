@@ -16,8 +16,8 @@ class Segment():
             return self.string_rep_tup[0]
     
     """Register a hit on a Segment and call the function from its
-    Ship that checks if the ship was sunk.
-    Return the result indicating whether the Ship was sunk."""
+    ship that checks if the ship was sunk.
+    Return the boolean value 'sunk' from the ship."""
     def register_segment_hit(self):
         if self.hit == False:
             self.hit = True
