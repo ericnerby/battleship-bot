@@ -3,7 +3,7 @@ Contains Ship and its subclasses for a Battleship game.
 
 The Ship class keeps segments grouped appropriately and uses the
 segments to determine whether a ship is sunk. It also creates the
-segments with the appropriate string representations that match the 
+segments with the appropriate string representations that match the
 class of the ship.
 
 Classes
@@ -45,7 +45,7 @@ class Ship():
             'v' for vertical
     segments : list of Segment objects
         a list containing each Segment of the Ship
-    sunk: Boolean
+    sunk: boolean
         indicates whether the Ship instance is sunk
     """
 
@@ -74,7 +74,6 @@ class Ship():
         self.vertical_string_reps = vertical_string_reps
         self.orientation = orientation
         self.segments = []
-        self.sunk = False
         self._assign_segments()
 
     def _assign_segments(self):
@@ -117,24 +116,16 @@ class Ship():
                                             self.horizontal_string_reps):
                 segment.string_rep_tup = segment_rep
 
-    def check_sunk(self):
+    @property
+    def sunk(self):
         """
-        Check to see if ship is sunk based on all segments being hit.
-
-        Checks 'hit' attribute of each Segment in segments list and
-        if all are True, sets 'sunk' attribute of ship to True.
-
-        Parameters
-        ----------
-        None
+        Indicate if ship is sunk based on all segments being hit.
 
         Returns
         -------
-        Boolean - indicates whether the ship was sunk
+        boolean - indicates whether the ship was sunk
         """
-        if all([segment.hit for segment in self.segments]):
-            self.sunk = True
-        return self.sunk
+        return all([segment.hit for segment in self.segments])
 
     def __len__(self):
         """Return length of 'segments' attribute for ship length."""

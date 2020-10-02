@@ -22,7 +22,7 @@ class Segment():
     ship : Ship object
         the Ship object that owns the segment
     location : TBD
-    hit : Boolean
+    hit : boolean
         indicates whether the Segment instance has been hit
     """
     def __init__(self, string_rep_tup, ship, location=None):
@@ -45,13 +45,7 @@ class Segment():
 
     def register_segment_hit(self):
         """
-        Changes 'hit' attribute to True and calls additional checks.
-
-        After the 'hit' attribute is set to True on the current
-        Segment instance, this method calls the check_sunk() method on
-        the Ship instance owning the segment.  This method then returns
-        the return value from the parent Ship's method to indicate
-        whether the Ship instance was sunk.
+        Change 'hit' attribute to True.
 
         IMPORTANT: Running this method on a Segment instance that has
         already been hit raises a TypeError.
@@ -62,11 +56,10 @@ class Segment():
 
         Returns
         -------
-        Boolean - indicates whether the Ship instance was sunk
+        boolean - indicates whether the Ship instance was sunk
         """
         if not self.hit:
             self.hit = True
-            return self.ship.check_sunk()
         else:
             raise TypeError("Cannot register a hit on the ship segment"
                             + " located at "
@@ -80,7 +73,7 @@ class Segment():
             return self.string_rep_tup[1]
         else:
             return self.string_rep_tup[0]
-    
+
     def __repr__(self):
         """Return a string identifying key attributes of segment"""
         return "Segment located at " + self.location
