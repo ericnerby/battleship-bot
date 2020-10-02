@@ -68,6 +68,10 @@ class Ship():
             orientation : str, optional, keyword-only
                 'h' for horizontal, 'v' for vertical (default is 'h')
         """
+        if orientation not in {'v', 'h'}:
+            raise ValueError(
+                "'orientation' argument must equal 'v' or 'h'."
+            )
         self.owner = owner
         self.ship_type = ship_type
         self.horizontal_string_reps = horizontal_string_reps
