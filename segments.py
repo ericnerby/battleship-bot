@@ -41,30 +41,27 @@ class Segment():
         self.string_rep_tup = string_rep_tup
         self.ship = ship
         self.location = location
-        self.hit = False
+        self._hit = False
 
-    def register_segment_hit(self):
-        """
-        Change 'hit' attribute to True.
+    @property
+    def hit(self):
+        """Return 'hit' property of segment."""
+        return self._hit
 
-        IMPORTANT: Running this method on a Segment instance that has
-        already been hit raises a TypeError.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        boolean - indicates whether the Ship instance was sunk
-        """
-        if not self.hit:
-            self.hit = True
+    @hit.setter
+    def hit(self, value):
+        """Set hit value. Produces an error if already hit."""
+        if value:
+            if not self._hit:
+                self._hit = True
+            else:
+                raise TypeError(
+                    "Cannot set 'hit' attribute to True on this "
+                    + "segment since it is already marked as hit.")
+        elif not value:
+            self._hit = False
         else:
-            raise TypeError("Cannot register a hit on the ship segment"
-                            + " located at "
-                            + self.location
-                            + " since it is already marked as hit.")
+            raise ValueError("Value for 'hit' can only be a boolean.")
 
     def __str__(self):
         """Return the appropriate visual string representation of the

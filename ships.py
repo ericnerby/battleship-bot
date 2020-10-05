@@ -131,6 +131,20 @@ class Ship():
         """
         return all([segment.hit for segment in self.segments])
 
+    @sunk.setter
+    def sunk(self, value):
+        """Allow setting of sunk value for computer opponent usage"""
+        if value:
+            for segment in self.segments:
+                if not segment.hit:
+                    segment.register_segment_hit()
+        elif not value:
+            raise ValueError(
+                "A ship's 'sunk' value can't be set to False directly.\n"
+                + "Set 'hit' attribute on segments to False instead.")
+        else:
+            raise ValueError("Value for 'sunk' can only be a boolean.")
+
     def __len__(self):
         """Return length of 'segments' attribute for ship length."""
         return len(self.segments)
