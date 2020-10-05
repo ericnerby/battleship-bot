@@ -110,18 +110,20 @@ class Ship():
 
         Returns
         -------
-        None
+        str - the new orientation value after rotation
         """
         if self.orientation == 'h':
             self.orientation = 'v'
             for segment, segment_rep in zip(self.segments,
                                             self.vertical_string_reps):
                 segment.string_rep_tup = segment_rep
+            return self.orientation
         elif self.orientation == 'v':
             self.orientation = 'h'
             for segment, segment_rep in zip(self.segments,
                                             self.horizontal_string_reps):
                 segment.string_rep_tup = segment_rep
+            return self.orientation
 
     @property
     def sunk(self):
