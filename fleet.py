@@ -20,7 +20,7 @@ class Fleet(list):
     Attributes
     ----------
     owner : Player object
-        the object representing who owns the fleet
+        the object which owns the fleet
 
     Properties
     ----------
@@ -30,6 +30,14 @@ class Fleet(list):
         a list of all ships which have not been sunk
     """
     def __init__(self, owner, *args, **kwargs):
+        """
+        Construct attributes for Fleet object
+
+        Parameters
+        ----------
+            owner : Player object
+                the object which owns the fleet
+        """
         super().__init__(*args, **kwargs)
         self.owner = owner
         self.append(Battleship(owner))
