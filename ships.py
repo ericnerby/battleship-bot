@@ -45,6 +45,9 @@ class Ship():
             'v' for vertical
     segments : list of Segment objects
         a list containing each Segment of the Ship
+
+    Properties
+    ----------
     sunk: boolean
         indicates whether the Ship instance is sunk
     """
