@@ -58,7 +58,7 @@ class Board(OrderedDict):
                     self[letter][number] = RadarSpace(location, self)
                 else:
                     self[letter][number] = FieldSpace(location, self)
-    
+
     def __str__(self):
+        """Return string of board with role listed."""
         return "{} board".format(self.role)
-    
