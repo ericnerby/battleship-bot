@@ -56,6 +56,12 @@ class Space:
                 + self.location
                 + "' since a guess has already been made on the space.")
         self._guessed = True
+    
+    def __str__(self):
+        return "space {} on {}".format(self.location, self.board)
+
+    def __repr__(self):
+        return "space {} on {}".format(self.location, self.board)
 
 
 class FieldSpace(Space):

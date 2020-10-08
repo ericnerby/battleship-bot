@@ -30,7 +30,7 @@ class Board(OrderedDict):
     Attributes
     ----------
     role : str
-        'radar' or 'field' determines which purpose the board is serving
+        'radar' or 'field' determines board purpose
     """
     def __init__(self, role, *args, **kwargs):
         """
@@ -38,8 +38,8 @@ class Board(OrderedDict):
 
         Parameters
         ----------
-            role : Player object
-                the object which owns the Board
+            role : str
+                'radar' or 'field' determines board purpose
         """
         if role not in {'radar', 'field'}:
             raise ValueError(
@@ -58,3 +58,7 @@ class Board(OrderedDict):
                     self[letter][number] = RadarSpace(location, self)
                 else:
                     self[letter][number] = FieldSpace(location, self)
+    
+    def __str__(self):
+        return "{} board".format(self.role)
+    

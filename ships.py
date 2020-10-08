@@ -52,15 +52,13 @@ class Ship():
         indicates whether the Ship instance is sunk
     """
 
-    def __init__(self, owner, ship_type, horizontal_string_reps,
+    def __init__(self, ship_type, horizontal_string_reps,
                  vertical_string_reps, *, orientation='h'):
         """
         Construct attributes for Ship object
 
         Parameters
         ----------
-            owner : Player object
-                object which owns the ship
             ship_type : str
                 a string representing the type of ship
                 example: 'PT Boat'
@@ -75,7 +73,6 @@ class Ship():
             raise ValueError(
                 "'orientation' argument must equal 'v' or 'h'."
             )
-        self.owner = owner
         self.ship_type = ship_type
         self.horizontal_string_reps = horizontal_string_reps
         self.vertical_string_reps = vertical_string_reps
@@ -160,7 +157,7 @@ class Carrier(Ship):
     Subclass of ship with Carrier attributes filled in.
     """
 
-    def __init__(self, owner, *, orientation='h'):
+    def __init__(self, *, orientation='h'):
         """
         Construct attributes for Carrier subclass of Ship.
 
@@ -185,7 +182,7 @@ class Carrier(Ship):
             ("||", "|X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'Carrier', horizontal_string_reps,
+        super().__init__('Carrier', horizontal_string_reps,
                          vertical_string_reps, orientation=orientation)
 
 
@@ -194,7 +191,7 @@ class Battleship(Ship):
     Subclass of Ship with Battleship attributes filled in.
     """
 
-    def __init__(self, owner, *, orientation='h'):
+    def __init__(self, *, orientation='h'):
         """
         Construct attributes for Battleship subclass of Ship.
 
@@ -217,7 +214,7 @@ class Battleship(Ship):
             ("||", "|X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'Battleship', horizontal_string_reps,
+        super().__init__('Battleship', horizontal_string_reps,
                          vertical_string_reps, orientation=orientation)
 
 
@@ -226,7 +223,7 @@ class Destroyer(Ship):
     Subclass of Ship with Destroyer attributes filled in.
     """
 
-    def __init__(self, owner, *, orientation='h'):
+    def __init__(self, *, orientation='h'):
         """
         Construct attributes for Destroyer subclass of Ship.
 
@@ -247,7 +244,7 @@ class Destroyer(Ship):
             ("||", "|X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'Destroyer', horizontal_string_reps,
+        super().__init__('Destroyer', horizontal_string_reps,
                          vertical_string_reps, orientation=orientation)
 
 
@@ -256,7 +253,7 @@ class Submarine(Ship):
     Subclass of Ship with Submarine attributes filled in.
     """
 
-    def __init__(self, owner, *, orientation='h'):
+    def __init__(self, *, orientation='h'):
         """
         Construct attributes for Submarine subclass of Ship.
 
@@ -277,7 +274,7 @@ class Submarine(Ship):
             ("|>", "|X"),
             ("\\/", "\\X"),
         ]
-        super().__init__(owner, 'Submarine', horizontal_string_reps,
+        super().__init__('Submarine', horizontal_string_reps,
                          vertical_string_reps, orientation=orientation)
 
 
@@ -286,7 +283,7 @@ class PTBoat(Ship):
     Subclass of Ship with PTBoat attributes filled in.
     """
 
-    def __init__(self, owner, *, orientation='h'):
+    def __init__(self, *, orientation='h'):
         """
         Construct attributes for PTBoat subclass of Ship.
 
@@ -305,5 +302,5 @@ class PTBoat(Ship):
             ("/\\", "/X"),
             ("[]", "[X"),
         ]
-        super().__init__(owner, 'PT Boat', horizontal_string_reps,
+        super().__init__('PT Boat', horizontal_string_reps,
                          vertical_string_reps, orientation=orientation)

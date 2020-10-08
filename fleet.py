@@ -17,11 +17,6 @@ class Fleet(list):
     """
     A list of one player's ships with some properties for tracking
 
-    Attributes
-    ----------
-    owner : Player object
-        the object which owns the fleet
-
     Properties
     ----------
     defeated : boolean
@@ -29,22 +24,14 @@ class Fleet(list):
     ships_remaining : list
         a list of all ships which have not been sunk
     """
-    def __init__(self, owner, *args, **kwargs):
-        """
-        Construct attributes for Fleet object
-
-        Parameters
-        ----------
-            owner : Player object
-                the object which owns the fleet
-        """
+    def __init__(self, *args, **kwargs):
+        """Construct attributes for Fleet object."""
         super().__init__(*args, **kwargs)
-        self.owner = owner
-        self.append(Battleship(owner))
-        self.append(Carrier(owner))
-        self.append(Destroyer(owner))
-        self.append(PTBoat(owner))
-        self.append(Submarine(owner))
+        self.append(Battleship())
+        self.append(Carrier())
+        self.append(Destroyer())
+        self.append(PTBoat())
+        self.append(Submarine())
 
     @property
     def defeated(self):
