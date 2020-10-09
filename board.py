@@ -5,14 +5,15 @@ This module is used to set up two 10x10 grids where the computer
 opponent can track guesses on its turn and also place its own ships to
 receive guesses from the player.
 
-The Board is an ordered dictionary such that a space can be indentified
-by letter and number.  For example, board_object['c'][7] would
-represent 'C7' on the grid.
+The Board is a zero-indexed list of zero-indexed lists.  The first
+index represents the letter-row, and the second represents the
+number-column.
+For example, space A10 would be identified as board[0][9].
 
 Classes
 -------
 Board
-    An OrderedDict representing a grid with the letters A-J and numbers 1-10
+    A 2-D list representing a 10 x 10 grid
 Space
     A class for a space on the board which can hold a ship segment.
 """
@@ -23,9 +24,9 @@ from string import ascii_lowercase as alphabet
 from spaces import FieldSpace, RadarSpace
 
 
-class Board(OrderedDict):
+class Board(list):
     """
-    An OrderedDict representing a grid with the letters A-J and numbers 1-10
+    A 2-D list representing a 10 x 10 grid
 
     Attributes
     ----------
@@ -49,15 +50,17 @@ class Board(OrderedDict):
         self._set_up_spaces()
 
     def _set_up_spaces(self):
-        """Set up grid of A-J and numbers 1-10 with Space instances."""
-        for letter in alphabet[:10]:
-            self[letter] = OrderedDict()
-            for number in range(1, 11):
-                location = letter.upper() + str(number)
+        """Set up 10 x 10 zero-indexed grid with Space instances."""
+        for index, letter in enumerate(alphabet[:10]):
+            self.append([])
+            for number in range(10):
+                # Generate str representation of location for space.
+                # Example: 'J7'
+                location = letter.upper() + str(number + 1)
                 if self.role == 'radar':
-                    self[letter][number] = RadarSpace(location, self)
+                    self[index].append(RadarSpace(location, self))
                 else:
-                    self[letter][number] = FieldSpace(location, self)
+                    self[index].append(FieldSpace(location, self))
 
     def __str__(self):
         """Return string of board with role listed."""
