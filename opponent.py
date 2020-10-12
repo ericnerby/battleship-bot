@@ -18,8 +18,8 @@ class Opponent:
             self._place_ship(ship)
 
     def _place_ship(self, ship):
-        row = random.randint(0, 10)
-        column = random.randint(0, 10)
+        row = random.randint(0, 9)
+        column = random.randint(0, 9)
         rotate = random.randint(0, 1)
         if rotate:
             ship.rotate()
@@ -35,20 +35,27 @@ class Opponent:
 
     def _check_spaces(self, row, column, ship):
         """Check if spaces are available at given starting space for ship."""
-        import pdb; pdb.set_trace()
         if ship.orientation == 'h':  # if ship is horizontal
             for index in range(len(ship)):
                 # If any proposed space for a ship does not exist
                 #   or is already occupied, stop the for loop and
                 #   return False from the method.
-                if column + index >= len(self.field_board[row]):
-                    return False
-                elif self.field_board[row][column + index].segment:
-                    return False
+                try:
+                    if (column + index) >= len(self.field_board[row]):
+                        return False
+                    elif self.field_board[row][column + index].segment:
+                        return False
+                except IndexError:
+                    print(
+                        "Starting space is outside the range of the board.")
         else:  # if ship is vertical
             for index in range(len(ship)):
-                if row + index >= len(self.field_board):
-                    return False
-                elif self.field_board[row + index][column].segment:
-                    return False
+                try:
+                    if (row + index) >= len(self.field_board):
+                        return False
+                    elif self.field_board[row + index][column].segment:
+                        return False
+                except IndexError:
+                    print(
+                        "Starting space is outside the range of the board.")
         return True
