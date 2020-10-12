@@ -18,7 +18,6 @@ Space
     A class for a space on the board which can hold a ship segment.
 """
 
-from collections import OrderedDict
 from string import ascii_lowercase as alphabet
 
 from spaces import FieldSpace, RadarSpace
