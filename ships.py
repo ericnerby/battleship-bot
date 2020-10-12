@@ -66,8 +66,8 @@ class Ship():
                 should generally be passed by __init__ in subclass
             vertical_string_reps : list of tuples, optional
                 should generally be passed by __init__ in subclass
-            orientation : str, optional, keyword-only
-                'h' for horizontal, 'v' for vertical (default is 'h')
+            orientation : str, optional, keyword-only | default: 'h'
+                'h' for horizontal, 'v' for vertical
         """
         if orientation not in {'v', 'h'}:
             raise ValueError(
