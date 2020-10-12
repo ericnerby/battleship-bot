@@ -18,8 +18,8 @@ class Opponent:
             self._place_ship(ship)
 
     def _place_ship(self, ship):
-        row = random.randint(0, 9)
-        column = random.randint(0, 9)
+        row = random.randint(0, len(self.field_board) - 1)
+        column = random.randint(0, len(self.field_board[0]) - 1)
         rotate = random.randint(0, 1)
         if rotate:
             ship.rotate()

@@ -21,11 +21,10 @@ class Segment():
         before and after a hit.
     ship : Ship object
         the Ship object that owns the segment
-    location : TBD
     hit : boolean
         indicates whether the Segment instance has been hit
     """
-    def __init__(self, string_rep_tup, ship, location=None):
+    def __init__(self, string_rep_tup, ship):
         """
         Constructs attributes for Segment object
 
@@ -36,11 +35,9 @@ class Segment():
                 section before and after a hit.
             ship : Ship object
                 the Ship object that owns the segment
-            location : TBD
         """
         self.string_rep_tup = string_rep_tup
         self.ship = ship
-        self.location = location
         self._hit = False
 
     @property
@@ -73,4 +70,4 @@ class Segment():
 
     def __repr__(self):
         """Return a string identifying key attributes of segment"""
-        return "Segment located at " + self.location
+        return "Ship segment of {}".format(self.ship)
