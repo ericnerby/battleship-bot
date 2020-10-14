@@ -108,7 +108,7 @@ class FieldSpace(Space):
         self._segment = segment
     
 
-    def make_guess(self):
+    def take_guess(self):
         """
         Mark space as guessed and return segment from space or None.
 

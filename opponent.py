@@ -8,6 +8,7 @@ class Opponent:
     def __init__(self):
         self.radar_board = Board('radar')
         self.radar_fleet = Fleet()
+        self._last_guessed = None
 
         self.field_board = Board('field')
         self.field_fleet = Fleet()
@@ -59,3 +60,18 @@ class Opponent:
                     print(
                         "Starting space is outside the range of the board.")
         return True
+
+    def make_guess(self):
+        row = random.randint(0, len(self.field_board) - 1)
+        column = random.randint(0, len(self.field_board[0]) - 1)
+        if self.radar_board[row][column].guessed:
+            return self.make_guess()
+        return row, column
+    
+    def take_guess_answer(self, row, column, hit):
+        try:
+            self.radar_board[row][column].note_guess(hit)
+        except TypeError as typeerror:
+            print(typeerror)
+        else:
+            self._last_guessed = self.radar_board[row][column]

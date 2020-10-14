@@ -12,7 +12,6 @@ ConvertFromIndex
 
 import re
 from string import ascii_lowercase as alphabet
-from string import ascii_uppercase as alphabet_upper
 
 
 def ConvertToIndex(*args, zero_index=False):
@@ -87,7 +86,7 @@ def ConvertFromIndex(number, destination_format='one'):
     """
     FORMAT_OPTIONS = {
         'lower': lambda num: alphabet[num],
-        'upper': lambda num: alphabet_upper[num],
+        'upper': lambda num: alphabet[num].upper(),
         'zero': lambda num: str(num),
         'one': lambda num: str(num + 1),
     }
