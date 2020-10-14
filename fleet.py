@@ -33,6 +33,7 @@ class Fleet(list):
         self.append(PTBoat())
         self.append(Submarine())
 
+    # ------------Properties------------ #
     @property
     def defeated(self):
         """Indicates whether all ships in fleet have been sunk."""

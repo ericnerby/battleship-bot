@@ -12,9 +12,10 @@ class Opponent:
 
         self.field_board = Board('field')
         self.field_fleet = Fleet()
-        self.place_ships()
+        self._place_ships()
 
-    def place_ships(self):
+    # ------------Setup Methods------------ #
+    def _place_ships(self):
         for ship in self.field_fleet:
             self._place_ship(ship)
 
@@ -61,6 +62,7 @@ class Opponent:
                         "Starting space is outside the range of the board.")
         return True
 
+    # ------------Seeking Methods------------ #
     def make_guess(self):
         row = random.randint(0, len(self.field_board) - 1)
         column = random.randint(0, len(self.field_board[0]) - 1)

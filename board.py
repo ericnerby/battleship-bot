@@ -48,6 +48,7 @@ class Board(list):
         self.role = role
         self._set_up_spaces()
 
+    # ------------Setup Methods------------ #
     def _set_up_spaces(self):
         """Set up 10 x 10 zero-indexed grid with Space instances."""
         for index, letter in enumerate(alphabet[:10]):
@@ -61,6 +62,7 @@ class Board(list):
                 else:
                     self[index].append(FieldSpace(location, self))
 
+    # ------------Additional Dunder Methods------------ #
     def __str__(self):
         """Return string of board with role listed."""
         return "{} board".format(self.role)

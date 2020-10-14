@@ -43,11 +43,13 @@ class Space:
         self.board = board
         self._guessed = False
 
+    # ------------Properties------------ #
     @property
     def guessed(self):
         """Return guessed property"""
         return self._guessed
 
+    # ------------Helper Methods------------ #
     def _validate_unguessed(self):
         """Check if '_guessed' is currently False, then mark it True"""
         if self._guessed:
@@ -57,6 +59,7 @@ class Space:
                 + "' since a guess has already been made on the space.")
         self._guessed = True
 
+    # ------------Additional Dunder Methods------------ #
     def __str__(self):
         """Return string of space object with location and board."""
         return "space {} on {}".format(self.location, self.board)
@@ -92,6 +95,7 @@ class FieldSpace(Space):
         super().__init__(location, board)
         self._segment = None
 
+    # ------------Properties------------ #
     @property
     def segment(self):
         """Return 'segment' property of the Space."""
@@ -107,7 +111,7 @@ class FieldSpace(Space):
                 + " since the space is already assigned a segment.")
         self._segment = segment
     
-
+    # ------------Interface Methods------------ #
     def take_guess(self):
         """
         Mark space as guessed and return segment from space or None.
@@ -150,11 +154,13 @@ class RadarSpace(Space):
         super().__init__(location, board)
         self._hit = 0
 
+    # ------------Properties------------ #
     @property
     def hit(self):
         """Return hit property"""
         return self._hit
 
+    # ------------Interface Methods------------ #
     def note_guess(self, hit):
         """
         Mark space as guessed and mark hit attribute by argument passed.

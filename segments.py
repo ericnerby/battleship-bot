@@ -40,6 +40,7 @@ class Segment():
         self.ship = ship
         self._hit = False
 
+    # ------------Properties------------ #
     @property
     def hit(self):
         """Return 'hit' property of segment."""
@@ -60,6 +61,7 @@ class Segment():
         else:
             raise ValueError("Value for 'hit' can only be a boolean.")
 
+    # ------------Additional Dunder Methods------------ #
     def __str__(self):
         """Return the appropriate visual string representation of the
         segment based on whether or not it's been hit."""

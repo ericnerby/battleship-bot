@@ -122,6 +122,7 @@ class Ship():
                 segment.string_rep_tup = segment_rep
             return self.orientation
 
+    # ------------Properties------------ #
     @property
     def sunk(self):
         """
@@ -147,6 +148,7 @@ class Ship():
         else:
             raise ValueError("Value for 'sunk' can only be a boolean.")
 
+    # ------------Additional Dunder Methods------------ #
     def __len__(self):
         """Return length of 'segments' attribute for ship length."""
         return len(self.segments)
