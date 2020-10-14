@@ -21,7 +21,7 @@ def ConvertToIndex(*args, zero_index=False):
     Parameters
     ----------
     *args : str or int
-        str must be in range [a-zA-Z] or convertible to an int.
+        str must be in set [a-zA-Z] or convertible to an int.
         int will be returned unchanged or converted from one-index
             to zero-index based on zero_index argument.
     zero_index : boolean, optional, keyword-only | default: False
@@ -69,9 +69,8 @@ def ConvertFromIndex(number, destination_format='one'):
     Parameters
     ----------
     number : int
-        str must be in range [a-zA-Z] or convertible to an int.
-        int will be returned unchanged or converted from one-index
-            to zero-index based on zero_index argument.
+        Zero-index number to be converted.
+        If used with 'lower' or 'upper' conversion, must be in range 0-25.
     destination_format : str, optional | default: 'one'
         determine which format to return
         'one' - a one-index number as a string
