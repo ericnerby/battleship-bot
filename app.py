@@ -8,12 +8,19 @@ from opponent import Opponent
 
 
 WELCOME_SCREEN = """
-Welcome to Battleship!
-----------------------
+       . |_
+ __=n_[]_[_]_n=_  Welcome to Battleship!
+ \_____________/  ----------------------
+
 Please set up your board by placing all your ships and get ready to
-play a great game of battleship.  To quit at anytime, type '-q' and hit
-Enter. To bring up the help menu, type '-h'.  Otherwise, please
-follow the prompts throughout and have fun!
+play a great game of battleship.  If you don't have a physical game of
+battleship available, you can grab a paper/digital sheet here:
+
+https://docs.google.com/spreadsheets/d/1FnvfjBafRl1t-cBGJan1N3Vp_3ucJnNYCR-9fpPn0rg/edit?usp=sharing
+
+To quit at anytime, type '-q' and hit Enter.  To bring up the help
+menu, type '-h'.  Otherwise, please follow the prompts throughout
+and have fun!
 
 """
 
@@ -41,12 +48,12 @@ def check_help_and_quit(user_input):
 
 def player_turn():
     """What happens when it's the player's turn."""
-    pass
+    input("Player's turn")
 
 
 def opponent_turn():
     """What happens when it's the computer's turn."""
-    pass
+    input("Computer's turn")
 
 
 def check_for_win():
