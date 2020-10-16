@@ -93,7 +93,7 @@ def ConvertFromIndex(number, destination_format='one'):
         raise TypeError("'number' argument must be an integer.")
     if destination_format in FORMAT_OPTIONS:
         if (destination_format in {'upper', 'lower'}
-                and number > len(alphabet)):
+                and (number > len(alphabet) or number < 0)):
             raise ValueError(
                 "'number' must be 0-25 for 'upper' or 'lower' conversion.")
         return FORMAT_OPTIONS[destination_format](number)
