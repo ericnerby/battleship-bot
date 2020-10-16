@@ -77,3 +77,8 @@ class Opponent:
             print(typeerror)
         else:
             self._last_guessed = self.radar_board[row][column]
+
+    # ------------Additional Dunder Methods------------ #
+    def __str__(self):
+        """Return string representation for announcements."""
+        return "The Computer"
