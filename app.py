@@ -7,7 +7,7 @@ from gameconversions import ConvertFromIndex, ConvertToIndex
 from opponent import Opponent
 
 
-WELCOME_SCREEN = """
+WELCOME_SCREEN = r"""
        . |_
  __=n_[]_[_]_n=_  Welcome to Battleship!
  \_____________/  ----------------------
@@ -40,7 +40,7 @@ def clear():
 
 def check_help_and_quit(user_input):
     if re.match(r'-q', user_input):
-        sys.exit([0])
+        sys.exit()
     elif re.match(r'-h', user_input):
         # bring up help screen
         pass
