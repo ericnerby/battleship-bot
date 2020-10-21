@@ -4,9 +4,9 @@ coordinates and machine friendly zero-indexed values.
 
 Functions
 ---------
-ConvertToIndex
+convert_to_index
     Take letter or number values and return a tuple of zero-index values.
-ConvertFromIndex
+convert_from_index
     Take zero-index int and return str in given format.
 """
 
@@ -14,7 +14,7 @@ import re
 from string import ascii_lowercase as alphabet
 
 
-def ConvertToIndex(*args, zero_index=False):
+def convert_to_index(*args, zero_index=False):
     """
     Take letter or number values and return a tuple of zero-index values.
 
@@ -62,7 +62,7 @@ def ConvertToIndex(*args, zero_index=False):
     return tuple(output)
 
 
-def ConvertFromIndex(number, destination_format='one'):
+def convert_from_index(number, destination_format='one'):
     """
     Take zero-index int and return str in given format.
 
