@@ -85,14 +85,16 @@ def player_turn():
             print("Your guess was outside of the range of the board.")
             sleeper()
             player_turn()
-        segment = opponent.field_board[row_guess][column_guess].take_guess()
-        if segment:
-            print("'{}' is a hit!".format(player_guess))
-            ship = segment.ship
-            if ship.sunk:
-                print("You sunk my {}!".format(ship))
         else:
-            print("'{}' is a miss!".format(player_guess))
+            segment = opponent.field_board[row_guess][column_guess].take_guess()
+            if segment:
+                print("'{}' is a hit!".format(player_input))
+                ship = segment.ship
+                if ship.sunk:
+                    print("You sunk my {}!".format(ship))
+            else:
+                print("'{}' is a miss!".format(player_input))
+            sleeper()
     else:
         print(
            "Please make sure you're entering your guess in the format 'A1'.")
@@ -101,9 +103,19 @@ def player_turn():
 
 
 def opponent_turn():
-    """What happens when it's the computer's turn."""
-    player_input = input("Computer's turn")
+    """Make guess, prompt player, and mark guess."""
+    clear()
+    row_guess, column_guess = opponent.make_guess()
+    row_friendly = convert_from_index(row_guess, 'upper')
+    column_friendly = convert_from_index(column_guess, 'one')
+    print("I'm going to guess... {}{}.".format(
+        row_friendly, column_friendly))
+    player_input = input("'h' for hit, 'm' for miss. [M/h] ")
     check_help_and_quit(player_input)
+    if re.match(r'h', player_input, re.I):
+        opponent.take_guess_answer(row_guess, column_guess, True)
+    else:
+        opponent.take_guess_answer(row_guess, column_guess, False)
 
 
 def game_loop(starting_player):
