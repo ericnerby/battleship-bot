@@ -101,10 +101,6 @@ class Ship():
         representations of the segments to match the newly assigned
         orientation.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         str - the new orientation value after rotation
