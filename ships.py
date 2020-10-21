@@ -152,6 +152,10 @@ class Ship():
     def __len__(self):
         """Return length of 'segments' attribute for ship length."""
         return len(self.segments)
+    
+    def __str__(self):
+        """Return ship_type when printing ship."""
+        return self.ship_type
 
 
 class Carrier(Ship):
