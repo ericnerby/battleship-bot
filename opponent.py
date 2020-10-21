@@ -5,6 +5,20 @@ from fleet import Fleet
 
 
 class Opponent:
+    """
+    A class to represent the computer opponent.
+
+    Attributes
+    ----------
+    radar_board : Board object
+        a board for tracking guesses
+    radar_fleet : Fleet object
+        a fleet to track which player ships have been destroyed
+    field_board : Board object
+        a board for placing the opponent's ships and taking player guesses
+    field_fleet : Fleet object
+        a fleet containing the opponent's ships to track player hits
+    """
     def __init__(self):
         self.radar_board = Board('radar')
         self.radar_fleet = Fleet()
@@ -16,10 +30,12 @@ class Opponent:
 
     # ------------Setup Methods------------ #
     def _place_ships(self):
+        """Place every ship in the opponent's fleet on the board."""
         for ship in self.field_fleet:
             self._place_ship(ship)
 
     def _place_ship(self, ship):
+        """Place a single ship on the board randomly."""
         row = random.randint(0, len(self.field_board) - 1)
         column = random.randint(0, len(self.field_board[0]) - 1)
         rotate = random.randint(0, 1)
@@ -64,6 +80,14 @@ class Opponent:
 
     # ------------Seeking Methods------------ #
     def make_guess(self):
+        """
+        Make a guess based on existing guesses.
+
+        Returns
+        -------
+        tuple of two int
+            zero-indexed row and column for guess
+        """
         row = random.randint(0, len(self.field_board) - 1)
         column = random.randint(0, len(self.field_board[0]) - 1)
         if self.radar_board[row][column].guessed:
@@ -71,6 +95,22 @@ class Opponent:
         return row, column
     
     def take_guess_answer(self, row, column, hit):
+        """
+        Take the result of a guess to mark it down on radar.
+
+        Parameters
+        ----------
+            row : int
+                a zero-indexed row for the guess
+            column : int
+                a zero-indexed column for the guess
+            hit : boolean
+                indicates whether the guess was a hit
+
+        Returns
+        -------
+        None
+        """
         try:
             self.radar_board[row][column].note_guess(hit)
         except TypeError as typeerror:
