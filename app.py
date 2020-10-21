@@ -55,6 +55,7 @@ class Player:
         self.name = name
 
     def __str__(self):
+        """Return name when Player object printed"""
         return self.name
 
 
@@ -132,7 +133,7 @@ def player_turn():
 def opponent_turn(existing_row=None, existing_column=None):
     """Make guess, prompt player, and mark guess."""
     clear()
-    if existing_row == None and existing_column == None:
+    if existing_row is None and existing_column is None:
         row_guess, column_guess = opponent.make_guess()
     else:
         row_guess = existing_row
@@ -187,14 +188,14 @@ def main():
 
 if __name__ == '__main__':
     opponent = Opponent()
-    name = None
+    user_name = None
     clear()
     print(WELCOME_SCREEN)
-    while not name:
-        name = input(
+    while not user_name:
+        user_name = input(
             "Before we get started, could you please tell me your name? ")
-        check_help_and_quit(name)
-        if not len(name):
-            name = None
-    player = Player(name)
+        check_help_and_quit(user_name)
+        if not len(user_name):
+            user_name = None
+    player = Player(user_name)
     main()
