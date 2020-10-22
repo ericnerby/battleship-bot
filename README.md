@@ -14,9 +14,9 @@ As you can see, I'm slowly building the game right now (as a project for my Code
 
 1. Make sure you have at least Python 3.8.4 installed on your computer. The app has not been tested with older versions, but should work fine if you've already upgraded to 3.9.0. You can get the installers and find instructions for installation on [the Python webpage](https://www.python.org/downloads/).
 1. Clone this repo to your computer.
-1. Navigate to the root of the project folder and run `python app.py` from a shell (command prompt, powershell, bash, etc.).
+1. Navigate to the root of the project folder and run `python app.py` from a shell (command prompt, powershell, bash, etc.).\*
     * Note: depending on which version(s) of Python you have installed, you may need to substitute `python` with `py` or `python3` to run the required version. If in doubt, run `python --version` with all three variations to see which one, if any, meet the requirement of 3.8.4 or later.
-    * On Windows it's possible that you've installed Python but still get an error "python is not recognized as an internal or external command". If this happens, you need to add python as an environment variable:
+    * On Windows it's possible that you've installed Python but still get an error "python is not recognized as an internal or external command". If this happens, you need to add python to the environment variables:
         1. Browse your harddrive for the python installation (typically something like `C:\Program Files\Python39` or whatever version you installed)
         1. Open that folder and copy its path to your clipboard.
         1. Right click "This PC" and go to Properties -> Advanced system settings -> Environment Variables.
@@ -24,6 +24,8 @@ As you can see, I'm slowly building the game right now (as a project for my Code
         1. In the "Edit Environment Variable" window, click add and paste the path you copied earlier.
         1. Click OK or Apply on that window, the Environment Variables window, and the System settings window.
 1. Follow the on-screen instructions to play the game. You can type '-q' at any time to quit the application or '-h' at any time to bring up the help screen.
+
+\* **One additional compatibility note:** The app is set up to clear the screen at regular intervals to provide a tidier and easier to follow experience. If you use *Git Bash* as your shell to run the application, this functionality may not work, but the app should function otherwise.
 
 ## Playing a Game
 
