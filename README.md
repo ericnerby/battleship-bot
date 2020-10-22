@@ -8,7 +8,7 @@ That experience is often lacking when you play Battleship against a computer. Yo
 
 I wanted to do something different. This is a command line app that plays a game of Battleship with you. You set up half of your board just like you were playing against another human, and the game doesn't know where anything is until you respond to its guesses (and given the possibility of a ship being sunk, the game will prompt you whether a ship was sunk when the computer gets a hit).
 
-As you can see, I'm slowly building the game right now (as a project for my Code Louisville Python course), so check back later and hopefully there will be a fun game waiting for you in the future!
+As you can see, this project is still a work in progress. The app will run, but some features are yet to be implemented, and as a result, it's currently impossible for the computer to win! Maybe you actually prefer that, but check back later and hopefully there will be a fully functional game waiting for you!
 
 ## Getting the App to Run
 
