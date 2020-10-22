@@ -70,7 +70,17 @@ def sleeper():
 
 
 def check_help_and_quit(user_input):
-    """Check user input for help or quit command and execute if present."""
+    """
+    Check user input for help or quit command and execute if present.
+    
+    If the help menu is called, the function returns True.  If the quit
+    command is called, the program closes in this function.  Otherwise,
+    the function returns False.
+
+    Returns
+    -------
+    boolean - indicates whether the help menu was called and displayed.
+    """
     if re.match(r'-q', user_input):
         sys.exit()
     elif re.match(r'-h', user_input):
@@ -81,7 +91,7 @@ def check_help_and_quit(user_input):
 
 
 def display_field():
-    # display the opponent's field
+    # TODO-display the opponent's field
     pass
 
 
@@ -91,7 +101,7 @@ def check_for_win():
     winner = None
     if opponent.field_fleet.defeated:
         winner = player
-    if opponent.radar_fleet.defeated:
+    elif opponent.radar_fleet.defeated:
         winner = opponent
     return winner
 
@@ -101,12 +111,16 @@ def player_turn():
     clear()
     player_input = input("Please enter your guess in the format 'A1': ")
     if check_help_and_quit(player_input):
+        # if the help menu is called, the player's turn starts
+        #     over after the help menu closes.
         player_turn()
         return
     player_guess = re.match(r'([a-zA-Z])(\d+)', player_input)
+    # check input for correct format
     if player_guess:
         row_guess, column_guess = player_guess.group(1, 2)
         row_guess, column_guess = convert_to_index(row_guess, column_guess)
+        # check that input is inside range of board
         if (row_guess >= len(opponent.field_board)
                 or column_guess >= len(opponent.field_board[0])
                 or row_guess < 0 or column_guess < 0):
@@ -114,6 +128,18 @@ def player_turn():
             sleeper()
             player_turn()
             return
+        # check if space was already guessed by player previously
+        if opponent.field_board[row_guess][column_guess].guessed:
+            if opponent.field_board[row_guess][column_guess].segment:
+                prev_guess_status = 'hit'
+            else:
+                prev_guess_status = 'miss'
+            print("You've already guessed {}. It was a {}".format(
+                player_input, prev_guess_status))
+            sleeper()
+            player_turn()
+            return
+        # check space for hit or miss
         segment = opponent.field_board[row_guess][column_guess].take_guess()
         if segment:
             print("'{}' is a hit!".format(player_input))
@@ -131,27 +157,51 @@ def player_turn():
 
 
 def opponent_turn(existing_row=None, existing_column=None):
-    """Make guess, prompt player, and mark guess."""
+    """
+    Make guess, prompt player, and mark guess.
+    
+    Parameters
+    ----------
+        existing_row : int, optional | default: None
+        existing_column : int, optional | default: None
+            these two parameters allow existing guess to be entered
+            instead of a new guess for the purpose of recursion
+    """
     clear()
     if existing_row is None and existing_column is None:
         row_guess, column_guess = opponent.make_guess()
     else:
         row_guess = existing_row
         column_guess = existing_column
-    row_friendly = convert_from_index(row_guess, 'upper')
-    column_friendly = convert_from_index(column_guess, 'one')
     print("I'm going to guess... {}{}.".format(
-        row_friendly, column_friendly))
+        convert_from_index(row_guess, 'upper'),
+        convert_from_index(column_guess, 'one')))
     player_input = input("'h' for hit, 'm' for miss. [M/h] ")
     if check_help_and_quit(player_input):
+        # If the help menu is called, the opponent's turn starts over
+        #     but with the existing guess loaded.
         opponent_turn(row_guess, column_guess)
     if re.match(r'h', player_input, re.I):
         opponent.take_guess_answer(row_guess, column_guess, True)
+        # TODO-On a hit, present additional prompt asking if a ship was sunk.
     else:
         opponent.take_guess_answer(row_guess, column_guess, False)
 
 
 def game_loop(starting_player):
+    """
+    Main loop of the game calls player and opponent turns until game over.
+    
+    Each cycle through the loop switches between player and opponent
+    turns and checks for a winner.  When there's a winner, it will be
+    announced, the opponent's field displayed, and the loop will break.
+
+    Parameters
+    ----------
+        starting_player : object
+            determines whether the player or the opponent will have the
+                first turn of the game
+    """
     next_player = starting_player
     while True:
         clear()
