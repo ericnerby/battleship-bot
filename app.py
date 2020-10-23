@@ -98,7 +98,7 @@ def display_field():
         field_string += " {} |".format(letter)
         for column in row:
             if column.segment:
-                field_string += "{}|".format(segment)
+                field_string += "{}|".format(column.segment)
             else:
                 field_string += "  |"
         field_string += "\n"
