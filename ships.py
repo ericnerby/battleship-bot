@@ -136,7 +136,7 @@ class Ship():
         if value:
             for segment in self.segments:
                 if not segment.hit:
-                    segment.register_segment_hit()
+                    segment.hit = True
         elif not value:
             raise ValueError(
                 "A ship's 'sunk' value can't be set to False directly.\n"

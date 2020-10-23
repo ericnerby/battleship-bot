@@ -79,35 +79,36 @@ class Opponent:
         return True
 
     # ------------Helper Methods------------ #
-    def possible_sunk(row, column):
-        possible_sunk_list = []
-        for ship in self.radar_fleet.ships_remaining:
-            ship_length = len(ship)
-            # check horizontal right
-            if column + ship_length <= len(self.radar_board[0]):
-                if all([self.radar_board[row][column + index].hit == 2
-                            for index in range(ship_length)]):
-                    possible_sunk_list.append(ship)
-                    continue
-            # check horizontal left
-            if column - ship_length >= -1:
-                if all([self.radar_board[row][column - index].hit == 2
-                            for index in range(ship_length)]):
-                    possible_sunk_list.append(ship)
-                    continue
-            # check vertical down
-            if row + ship_length <= len(self.radar_board):
-                if all([self.radar_board[row + index][column].hit == 2
-                            for index in range(ship_length)]):
-                    possible_sunk_list.append(ship)
-                    continue
-            # check vertical up
-            if column - ship_length >= -1:
-                if all([self.radar_board[row + index][column].hit == 2
-                            for index in range(ship_length)]):
-                    possible_sunk_list.append(ship)
-                    continue
-        return possible_sunk_list
+    def possible_sunk(self):
+        longest_possible = 0
+        # check horizontally adjacent hits on each row
+        for row in self.radar_board:
+            row_counter = 0
+            for index, column in enumerate(row, 1):
+                if column.hit == 2:
+                    row_counter += 1
+                    if index >= len(row):
+                        if row_counter > longest_possible:
+                            longest_possible = row_counter
+                else:
+                    if row_counter > longest_possible:
+                        longest_possible = row_counter
+                        row_counter = 0
+        # check vertically adjacent hits on each column
+        for column in range(len(self.radar_board[0])):
+            column_counter = 0
+            for row in range(len(self.radar_board)):
+                if self.radar_board[row][column].hit == 2:
+                    column_counter += 1
+                    if column >= len(self.radar_board):
+                        if column_counter > longest_possible:
+                            longest_possible = column_counter
+                else:
+                    if column_counter > longest_possible:
+                        longest_possible = column_counter
+                        column_counter = 0
+        return [ship for ship in self.radar_fleet.ships_remaining
+                 if len(ship) <= longest_possible]
 
     # ------------Seeking Methods------------ #
     def make_guess(self):

@@ -106,6 +106,33 @@ def check_for_win():
     return winner
 
 
+def check_for_sunken_ship():
+    possible_sunk_list = opponent.possible_sunk()
+    if len(possible_sunk_list):
+        print("Did I sink one of your ships?")
+        for index, ship in enumerate(possible_sunk_list, 1):
+            print("{}. {}".format(index, ship))
+        player_response = input(
+            "Please enter ship index or 0 for none (default 0): ")
+        if check_help_and_quit(player_response):
+            clear()
+        else:
+            ship_index = re.match(r'\d+', player_response)
+            if not ship_index:
+                ship_index = 0
+            else:
+                ship_index = int(ship_index.group())
+            if ship_index == 0:
+                return None
+            elif ship_index > len(possible_sunk_list):
+                print("{} is not in the above list. Please try again.")
+                sleeper()
+                return check_for_sunken_ship()
+            else:
+                possible_sunk_list[ship_index - 1].sunk = True
+                return possible_sunk_list[ship_index - 1]
+
+
 def player_turn():
     """Take player's guess, mark it, and provide feedback."""
     clear()
@@ -184,7 +211,7 @@ def opponent_turn(existing_row=None, existing_column=None):
         opponent_turn(row_guess, column_guess)
     if re.match(r'h', player_input, re.I):
         opponent.take_guess_answer(row_guess, column_guess, True)
-        # TODO-On a hit, present additional prompt asking if a ship was sunk.
+        check_for_sunken_ship()
     else:
         opponent.take_guess_answer(row_guess, column_guess, False)
 
