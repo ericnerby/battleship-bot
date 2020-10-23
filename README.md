@@ -8,12 +8,13 @@ That experience is often lacking when you play Battleship against a computer. Yo
 
 I wanted to do something different. This is a command line app that plays a game of Battleship with you. You set up half of your board just like you were playing against another human, and the game doesn't know where anything is until you respond to its guesses (and given the possibility of a ship being sunk, the game will prompt you whether a ship was sunk when the computer gets a hit).
 
-As you can see, this project is still a work in progress. The app will run, but some features are yet to be implemented, and as a result, it's currently impossible for the computer to win! Maybe you actually prefer that, but check back later and hopefully there will be a fully functional game waiting for you!
+This project is still a work in progress. The game will run, and the computer can technically win, but it's not very smart yet, so it would be really difficult for it to win. My next to-do is to continue making the computer opponent more intelligent so it has a fighting chance against the player.
 
 ## Getting the App to Run
 
 1. Make sure you have at least Python 3.8.4 installed on your computer or in a virtual environment. The app has not been tested with older versions, but should work fine with newer versions. You can find downloads and installation instructions on [the Python webpage](https://www.python.org/downloads/).
 1. Clone this repo to your computer.
+1. Navigate to the root of the project folder and run `pip install -r requirements.txt`.
 1. Navigate to the root of the project folder and run `python app.py` from a shell (command prompt, powershell, bash, etc.).\*
     * Note: depending on which version(s) of Python you have installed, you may need to substitute `python` with `py` or `python3` to run the required version. If in doubt, run `python --version` with all three variations to see which one, if any, meet the requirement of 3.8.4 or later.
     * On Windows it's possible that you've installed Python but still get an error "python is not recognized as an internal or external command". If this happens, you need to add python to the environment variables:
@@ -43,3 +44,11 @@ This project meets the following requirements for the Code Louisville Python Cou
 * Numerous functions/methods are included and called. Many of these functions have return values used by other parts of the application.
 * Regular expressions are used to validate user guesses and get them ready for conversion
 * Comments appear where clarification may be needed or to break up sections of code, and docstrings are applied throughout.
+
+## Project Structure and Development
+
+I spent most of my time up front developing modules for `ships` (and their `segments`), the `fleet`, which is a collection of ships, and the `board`, which is a collection of `spaces`. All of these modules come together in the `opponent` module, which is the heart of the game. This is where the computer's ships are randomly placed on one board and where the computer keeps track of its guesses on another board.
+
+Initially, I thought the board would be an *Ordered Dictionary* of *Ordered Dictionaries* so the spaces could be found in `whatever_board_instance['letter'][number]`, but as I started writing the `Opponent` class, this made everything way too complicated. Now instead, it's a simple *List* of *Lists*, and the `gameconversions` module takes care of converting between zero-indexed positions for the computer and the more familiar A1-J10 coordinates for the player.
+
+Once all those classes were constructed, I started building the main landing page, `app.py`. This is all more functional programming than the more object-oriented programming found in the modules, and this is where the help menu, player and computer turns, and main loop of the app are found.
