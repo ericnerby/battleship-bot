@@ -2,6 +2,7 @@ import os
 import random
 import re
 import sys
+from string import ascii_uppercase as ALPHABET
 import time
 
 from gameconversions import convert_from_index, convert_to_index
@@ -91,8 +92,17 @@ def check_help_and_quit(user_input):
 
 
 def display_field():
-    # TODO-display the opponent's field
-    pass
+    print("Here's my board:")
+    field_string = "    1  2  3  4  5  6  7  8  9  10\n"
+    for letter, row in zip(ALPHABET, opponent.field_board):
+        field_string += " {} |".format(letter)
+        for column in row:
+            if column.segment:
+                field_string += "{}|".format(segment)
+            else:
+                field_string += "  |"
+        field_string += "\n"
+    print(field_string)
 
 
 # --------- Game Play Functions --------- #
