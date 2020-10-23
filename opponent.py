@@ -94,7 +94,7 @@ class Opponent:
                 else:
                     if row_counter > longest_possible:
                         longest_possible = row_counter
-                        row_counter = 0
+                    row_counter = 0
         # check vertically adjacent hits on each column
         for column in range(len(self.radar_board[0])):
             column_counter = 0
@@ -108,7 +108,7 @@ class Opponent:
                 else:
                     if column_counter > longest_possible:
                         longest_possible = column_counter
-                        column_counter = 0
+                    column_counter = 0
         return [ship for ship in self.radar_fleet.ships_remaining
                  if len(ship) <= longest_possible]
 
