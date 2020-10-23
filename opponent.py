@@ -78,6 +78,37 @@ class Opponent:
                         "Starting space is outside the range of the board.")
         return True
 
+    # ------------Helper Methods------------ #
+    def possible_sunk(row, column):
+        possible_sunk_list = []
+        for ship in self.radar_fleet.ships_remaining:
+            ship_length = len(ship)
+            # check horizontal right
+            if column + ship_length <= len(self.radar_board[0]):
+                if all([self.radar_board[row][column + index].hit == 2
+                            for index in range(ship_length)]):
+                    possible_sunk_list.append(ship)
+                    continue
+            # check horizontal left
+            if column - ship_length >= -1:
+                if all([self.radar_board[row][column - index].hit == 2
+                            for index in range(ship_length)]):
+                    possible_sunk_list.append(ship)
+                    continue
+            # check vertical down
+            if row + ship_length <= len(self.radar_board):
+                if all([self.radar_board[row + index][column].hit == 2
+                            for index in range(ship_length)]):
+                    possible_sunk_list.append(ship)
+                    continue
+            # check vertical up
+            if column - ship_length >= -1:
+                if all([self.radar_board[row + index][column].hit == 2
+                            for index in range(ship_length)]):
+                    possible_sunk_list.append(ship)
+                    continue
+        return possible_sunk_list
+
     # ------------Seeking Methods------------ #
     def make_guess(self):
         """
