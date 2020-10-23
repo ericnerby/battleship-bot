@@ -82,14 +82,15 @@ class Opponent:
     def possible_sunk(self):
         longest_possible = 0
         # check horizontally adjacent hits on each row
-        for row in self.radar_board:
+        for row in range(len(self.radar_board)):
             row_counter = 0
-            for index, column in enumerate(row, 1):
-                if column.hit == 2:
+            for column in range(len(self.radar_board[row])):
+                if self.radar_board[row][column].hit == 2:
                     row_counter += 1
-                    if index >= len(row):
+                    if column + 1 >= len(self.radar_board[row]):
                         if row_counter > longest_possible:
                             longest_possible = row_counter
+                        row_counter = 0
                 else:
                     if row_counter > longest_possible:
                         longest_possible = row_counter
@@ -103,6 +104,7 @@ class Opponent:
                     if row + 1 >= len(self.radar_board):
                         if column_counter > longest_possible:
                             longest_possible = column_counter
+                        column_counter = 0
                 else:
                     if column_counter > longest_possible:
                         longest_possible = column_counter
