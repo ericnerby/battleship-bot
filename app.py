@@ -143,6 +143,7 @@ def player_turn():
         segment = opponent.field_board[row_guess][column_guess].take_guess()
         if segment:
             print("'{}' is a hit!".format(player_input))
+            segment.hit = True
             ship = segment.ship
             if ship.sunk:
                 print("You sunk my {}!".format(ship))
