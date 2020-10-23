@@ -100,7 +100,7 @@ class Opponent:
             for row in range(len(self.radar_board)):
                 if self.radar_board[row][column].hit == 2:
                     column_counter += 1
-                    if column >= len(self.radar_board):
+                    if row + 1 >= len(self.radar_board):
                         if column_counter > longest_possible:
                             longest_possible = column_counter
                 else:
