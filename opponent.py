@@ -80,6 +80,7 @@ class Opponent:
 
     # ------------Helper Methods------------ #
     def possible_sunk(self):
+        """Return list of possibly sunk ships from radar board."""
         longest_possible = 0
         # check horizontally adjacent hits on each row
         for row in range(len(self.radar_board)):

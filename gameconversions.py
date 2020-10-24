@@ -100,4 +100,3 @@ def convert_from_index(number, destination_format='one'):
     else:
         raise ValueError(
             f"'destination_format' must be one of: {FORMAT_OPTIONS.keys}.")
-

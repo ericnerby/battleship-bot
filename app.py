@@ -1,9 +1,22 @@
+"""
+Battleship Bot
+--------------
+
+This is the main module for the Battleship Bot app.  It contains all the
+prompts and loops to run through a game in the command line.  It depends
+on the opponent and gameconversions modules and their dependencies.
+
+Author: Eric Nerby
+Written: October 2020
+Updated: October 2020
+"""
+
 import os
 import random
 import re
 import sys
-from string import ascii_uppercase as ALPHABET
 import time
+from string import ascii_uppercase as ALPHABET
 
 from gameconversions import convert_from_index, convert_to_index
 from opponent import Opponent
@@ -92,6 +105,7 @@ def check_help_and_quit(user_input):
 
 
 def display_field():
+    """Display the computer's field_board at the end of the game."""
     print("Here's my board:")
     field_string = "    1  2  3  4  5  6  7  8  9  10\n"
     for letter, row in zip(ALPHABET, opponent.field_board):
@@ -117,6 +131,7 @@ def check_for_win():
 
 
 def check_for_sunken_ship():
+    """Ask player if the computer sunk one of their ships."""
     possible_sunk_list = opponent.possible_sunk()
     if len(possible_sunk_list):
         print("Did I sink one of your ships?")
@@ -258,6 +273,7 @@ def game_loop(starting_player):
 
 # --------- Game Setup --------- #
 def main():
+    """Randomly choose a starting player and start the game loop."""
     clear()
     if random.randint(0, 1):
         starting_player = opponent
@@ -275,6 +291,7 @@ def main():
 
 
 if __name__ == '__main__':
+    """If app is the main module, create Player and run main()."""
     opponent = Opponent()
     user_name = None
     clear()

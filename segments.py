@@ -63,8 +63,7 @@ class Segment():
 
     # ------------Additional Dunder Methods------------ #
     def __str__(self):
-        """Return the appropriate visual string representation of the
-        segment based on whether or not it's been hit."""
+        """Return visual string representation for segment."""
         if self.hit:
             return self.string_rep_tup[1]
         else:
