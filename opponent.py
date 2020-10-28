@@ -124,16 +124,17 @@ class Opponent:
         # Go through the _guess_list in reverse order to check for the
         #   first hit in the current ship destroying cycle.
         for guess in reversed(self._guess_list):
-            if guess.hit:
-                starting_point = guess
-            elif guess.sunk:
+            if guess.sunk:
                 # when a sunk guess appears, this means the starting
                 #   point has passed.
                 break
+            elif guess.hit:
+                starting_point = guess
         if not starting_point:
             self._destroy_mode = False
             self._hit_list.clear()
-            return self.make_guess()
+            self.make_guess()
+            return
         starting_row = starting_point.row
         starting_column = starting_point.column
         ships_remaining = self.radar_fleet.ships_remaining
@@ -207,7 +208,11 @@ class Opponent:
         else:
             # If there are no items in _hit_list, call method to build list
             self._build_hit_list()
-            return self._destroy_ship()
+            if len(self._hit_list):
+                return self._destroy_ship()
+            else:
+                self._destroy_mode = False
+                return self.make_guess()
 
     def make_guess(self):
         """
