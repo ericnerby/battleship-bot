@@ -21,6 +21,7 @@ class Opponent:
         a fleet containing the opponent's ships to track player hits
     """
     def __init__(self):
+        """Builds a new Opponent object. Takes no arguments."""
         self.radar_board = Board('radar')
         self.radar_fleet = Fleet()
 
@@ -118,11 +119,16 @@ class Opponent:
                  if len(ship) <= longest_possible]
     
     def _build_hit_list(self):
+        """Build a hit list to assist the _destroy_ship method."""
         starting_point = None
+        # Go through the _guess_list in reverse order to check for the
+        #   first hit in the current ship destroying cycle.
         for guess in reversed(self._guess_list):
             if guess.hit:
                 starting_point = guess
             elif guess.sunk:
+                # when a sunk guess appears, this means the starting
+                #   point has passed.
                 break
         if not starting_point:
             self._destroy_mode = False
@@ -130,60 +136,54 @@ class Opponent:
             return self.make_guess()
         starting_row = starting_point.row
         starting_column = starting_point.column
+        ships_remaining = self.radar_fleet.ships_remaining
+        longest_unsunk = max([len(ship) for ship in ships_remaining])
         # gather potential hits in row to right of start
-        index = 0
-        while True:
+        for index in range(longest_unsunk):
             if (starting_column + index >= len(
                     self.radar_board[0])):
                 break
             space = self.radar_board[starting_row][
                             starting_column + index]
-            if space.hit === 1:
+            if space.hit == 1:
                 break
-            elif space.hit === 0:
+            elif space.hit == 0:
                 self._hit_list.append((starting_row,
                                         starting_column + index))
-            index += 1
         # gather potential hits in row to left of start
-        index = 0
-        while True:
+        for index in range(longest_unsunk):
             if starting_column - index < 0:
                 break
             space = self.radar_board[starting_row][
                             starting_column - index]
-            if space.hit === 1:
+            if space.hit == 1:
                 break
-            elif space.hit === 0:
+            elif space.hit == 0:
                 self._hit_list.append((starting_row,
                                         starting_column - index))
-            index -= 1
         # gather potential hits in column below start
-        index = 0
-        while True:
-            if (starting_column + index >= len(
+        for index in range(longest_unsunk):
+            if (starting_row + index >= len(
                     self.radar_board)):
                 break
             space = self.radar_board[starting_row + index][
                                      starting_column]
-            if space.hit === 1:
+            if space.hit == 1:
                 break
-            elif space.hit === 0:
+            elif space.hit == 0:
                 self._hit_list.append((starting_row + index,
                                         starting_column))
-            index += 1
         # gather potential hits in column above start
-        index = 0
-        while True:
-            if starting_column + index < 0:
+        for index in range(longest_unsunk):
+            if starting_row - index < 0:
                 break
             space = self.radar_board[starting_row - index][
                                      starting_column]
-            if space.hit === 1:
+            if space.hit == 1:
                 break
-            elif space.hit === 0:
+            elif space.hit == 0:
                 self._hit_list.append((starting_row - index,
-                                        starting_column))
-            index -= 1
+                                       starting_column))
     
     @property
     def last_guess(self):
@@ -194,9 +194,18 @@ class Opponent:
 
     # ------------Seeking Methods------------ #
     def _destroy_ship(self):
+        """Return tuple of row and column coordinates from the _hit_list."""
+        if not self.last_guess.hit:
+            self._hit_list.clear()
+            self._build_hit_list()
+        if self.last_guess.sunk:
+            self._hit_list.clear()
+            self._destroy_mode = False
+            return self.make_guess()
         if len(self._hit_list):
             return self._hit_list.pop(0)
         else:
+            # If there are no items in _hit_list, call method to build list
             self._build_hit_list()
             return self._destroy_ship()
 
@@ -209,11 +218,12 @@ class Opponent:
         tuple of two int
             zero-indexed row and column for guess
         """
-        if self.last_guess.sunk:
-            self._destroy_mode = False
-            self._hit_list.clear()
-        elif self.last_guess.hit:
-            self._destroy_mode = True
+        if self.last_guess:
+            if self.last_guess.sunk:
+                self._destroy_mode = False
+                self._hit_list.clear()
+            elif self.last_guess.hit:
+                self._destroy_mode = True
         if self._destroy_mode:
             row, column = self._destroy_ship()
         else:
@@ -248,9 +258,9 @@ class Opponent:
             self._guess_list.append(Turn(self.radar_board[row][column],
                                     row, column))
     
-    def take_sunk_answer(self, ship, *, turn=self.last_guess):
+    def take_sunk_answer(self, ship):
         if isinstance(ship, Ship) or ship is None:
-            turn.sunk = ship
+            self.last_guess.sunk = ship
         else:
             raise TypeError("'ship' argument must be None or Ship object.")
 
@@ -275,7 +285,7 @@ class Turn:
     @sunk.setter
     def sunk(self, ship=None):
         if isinstance(ship, Ship) or ship is None:
-            self._ship = ship
+            self._sunk = ship
         else:
             raise TypeError("'ship' argument must be None or Ship object.")
 
