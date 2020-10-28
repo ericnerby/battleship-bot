@@ -155,6 +155,7 @@ def check_for_sunken_ship():
                 return check_for_sunken_ship()
             else:
                 possible_sunk_list[ship_index - 1].sunk = True
+                opponent.take_sunk_answer(possible_sunk_list[ship_index - 1])
                 return possible_sunk_list[ship_index - 1]
 
 
