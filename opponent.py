@@ -119,7 +119,13 @@ class Opponent:
                  if len(ship) <= longest_possible]
     
     def _build_hit_list(self):
-        """Build a hit list to assist the _destroy_ship method."""
+        """
+        Build a hit list to assist the _destroy_ship method.
+        
+        Returns
+        -------
+        boolean - indicates whether list was successfully created.
+        """
         starting_point = None
         # Go through the _guess_list in reverse order to check for the
         #   first hit in the current ship destroying cycle.
@@ -133,8 +139,7 @@ class Opponent:
         if not starting_point:
             self._destroy_mode = False
             self._hit_list.clear()
-            self.make_guess()
-            return
+            return False
         starting_row = starting_point.row
         starting_column = starting_point.column
         ships_remaining = self.radar_fleet.ships_remaining
@@ -185,9 +190,20 @@ class Opponent:
             elif space.hit == 0:
                 self._hit_list.append((starting_row - index,
                                        starting_column))
+        if len(self._hit_list):
+            return True
+        else:
+            return False
     
     @property
     def last_guess(self):
+        """
+        Return the last guess made by the computer.
+        
+        Returns
+        -------
+        Turn object or None - None is returned if no guesses have been made
+        """
         if len(self._guess_list):
             return self._guess_list[-1]
         else:
@@ -199,7 +215,7 @@ class Opponent:
         if not self.last_guess.hit:
             self._hit_list.clear()
             self._build_hit_list()
-        if self.last_guess.sunk:
+        elif self.last_guess.sunk:
             self._hit_list.clear()
             self._destroy_mode = False
             return self.make_guess()
@@ -207,8 +223,7 @@ class Opponent:
             return self._hit_list.pop(0)
         else:
             # If there are no items in _hit_list, call method to build list
-            self._build_hit_list()
-            if len(self._hit_list):
+            if self._build_hit_list():
                 return self._destroy_ship()
             else:
                 self._destroy_mode = False
@@ -264,6 +279,13 @@ class Opponent:
                                     row, column))
     
     def take_sunk_answer(self, ship):
+        """Mark a ship sunk on the previous guess.
+        
+        Parameters
+        ----------
+        ship : Ship object or None
+            Indicates the ship sunk on that guess or None for no ship sunk.
+        """
         if isinstance(ship, Ship) or ship is None:
             self.last_guess.sunk = ship
         else:
@@ -277,6 +299,25 @@ class Opponent:
 
 
 class Turn:
+    """
+    Class for keeping track of the result of the computer's turn.
+
+    Attributes
+    ----------
+    space : Space object
+        space associated with turn
+    row : int
+        row number associated with turn
+    column : int
+        column number associated with turn
+
+    Properties
+    ----------
+    sunk : Ship object or None
+        indicates if a ship was sunk on that guess
+    hit : boolean
+        indicates whether the guess was a hit on the turn
+    """
     def __init__(self, space, row, column):
         self.space = space
         self.row = row
@@ -285,10 +326,19 @@ class Turn:
     
     @property
     def sunk(self):
+        """Return sunk property"""
         return self._sunk
     
     @sunk.setter
     def sunk(self, ship=None):
+        """
+        Set sunk property
+    
+        Parameters
+        ----------
+        ship : Ship object or None, optional | default: None
+            indicates the ship that was sunk, if any, on the guess
+        """
         if isinstance(ship, Ship) or ship is None:
             self._sunk = ship
         else:
@@ -296,6 +346,7 @@ class Turn:
 
     @property
     def hit(self):
+        """Return boolean indicating whether guess was a hit."""
         if self.space.hit == 2:
             return True
         else:
