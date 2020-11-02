@@ -8,7 +8,7 @@ on the opponent and gameconversions modules and their dependencies.
 
 Author: Eric Nerby
 Written: October 2020
-Updated: October 2020
+Updated: November 2020
 """
 
 import os
