@@ -228,6 +228,23 @@ class Opponent:
             else:
                 self._destroy_mode = False
                 return self.make_guess()
+    
+    def _seek_ships(self):
+        """
+        Return tuple of row and column coordinates for guesses.
+        
+        Note: Currently will only work with even row lengths.
+        """
+        row = random.randint(0, len(self.field_board) - 1)
+        # make column even
+        column = random.randint(0, int((len(self.field_board[0]) / 2)))
+        column = column * 2
+        # if row is odd, make column odd
+        if row % 2 != 0:
+            column += 1
+        if self.radar_board[row][column].guessed:
+            return self._seek_ships()
+        return row, column
 
     def make_guess(self):
         """
