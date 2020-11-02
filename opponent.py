@@ -28,10 +28,14 @@ class Opponent:
         self._destroy_mode = False
         self._guess_list = []
         self._hit_list = []
+        # _guess_seed determines evens or odds for _seek_ships method
+        #   and order of row and column hits in _hit_list
+        self._guess_seed = random.randint(0, 1)
 
         self.field_board = Board('field')
         self.field_fleet = Fleet()
         self._place_ships()
+
 
     # ------------Setup Methods------------ #
     def _place_ships(self):
@@ -83,7 +87,25 @@ class Opponent:
                         "Starting space is outside the range of the board.")
         return True
 
+
     # ------------Helper Methods------------ #
+    @property
+    def total_hits(self):
+        """Return the total number of hits made by Opponent."""
+        total = 0
+        for guess in self._guess_list:
+            if guess.hit:
+                total += 1
+        return total
+    
+    @property
+    def spare_hits(self):
+        """Return number of hits not accounted for in sunk ships."""
+        total_sunk_hits = 0
+        for ship in self.radar_fleet.ships_sunk:
+            total_sunk_hits += len(ship)
+        return self.total_hits - total_sunk_hits
+
     def possible_sunk(self):
         """Return list of possibly sunk ships from radar board."""
         longest_possible = 0
@@ -115,35 +137,17 @@ class Opponent:
                     if column_counter > longest_possible:
                         longest_possible = column_counter
                     column_counter = 0
+        # check longest_possible against number of hits not already
+        #   tied to a sunken ship
+        unaccounted_hits = self.spare_hits
+        if unaccounted_hits < longest_possible:
+            longest_possible = unaccounted_hits
         return [ship for ship in self.radar_fleet.ships_remaining
                  if len(ship) <= longest_possible]
     
-    def _build_hit_list(self):
-        """
-        Build a hit list to assist the _destroy_ship method.
-        
-        Returns
-        -------
-        boolean - indicates whether list was successfully created.
-        """
-        starting_point = None
-        # Go through the _guess_list in reverse order to check for the
-        #   first hit in the current ship destroying cycle.
-        for guess in reversed(self._guess_list):
-            if guess.sunk:
-                # when a sunk guess appears, this means the starting
-                #   point has passed.
-                break
-            elif guess.hit:
-                starting_point = guess
-        if not starting_point:
-            self._destroy_mode = False
-            self._hit_list.clear()
-            return False
-        starting_row = starting_point.row
-        starting_column = starting_point.column
-        ships_remaining = self.radar_fleet.ships_remaining
-        longest_unsunk = max([len(ship) for ship in ships_remaining])
+    def _horizontal_hit_list(self, starting_row, starting_column,
+                             longest_unsunk):
+        """Add potential hits right and left of starting point."""
         # gather potential hits in row to right of start
         for index in range(longest_unsunk):
             if (starting_column + index >= len(
@@ -167,6 +171,10 @@ class Opponent:
             elif space.hit == 0:
                 self._hit_list.append((starting_row,
                                         starting_column - index))
+
+    def _vertical_hit_list(self, starting_row, starting_column,
+                             longest_unsunk):
+        """Add potential hits above and below starting point."""
         # gather potential hits in column below start
         for index in range(longest_unsunk):
             if (starting_row + index >= len(
@@ -190,6 +198,56 @@ class Opponent:
             elif space.hit == 0:
                 self._hit_list.append((starting_row - index,
                                        starting_column))
+
+    def _build_hit_list(self, starting_row=None, starting_column=None):
+        """
+        Build a hit list to assist the _destroy_ship method.
+        
+        Parameters
+        ----------
+        starting_row : int, optional | default: None
+            starting row to use _hit_list for evaluating new guesses
+        starting_column : int, optional | default: None
+            starting column to use _hit_list for evaluating new guesses
+
+        Returns
+        -------
+        boolean - indicates whether list was successfully created.
+        """
+        if not starting_row or not starting_column:
+            starting_point = None
+            # Go through the _guess_list in reverse order to check for the
+            #   first hit in the current ship destroying cycle.
+            for guess in reversed(self._guess_list):
+                if guess.sunk:
+                    # when a sunk guess appears, this means the starting
+                    #   point has passed.
+                    break
+                elif guess.hit:
+                    starting_point = guess
+            if not starting_point:
+                self._destroy_mode = False
+                self._hit_list.clear()
+                return False
+            starting_row = starting_point.row
+            starting_column = starting_point.column
+        ships_remaining = self.radar_fleet.ships_remaining
+        longest_unsunk = max([len(ship) for ship in ships_remaining])
+        # randomly decide whether to start with horizontal or vertical hits
+        if self._guess_seed:
+            # gather potential hits in row around start
+            self._horizontal_hit_list(starting_row, starting_column,
+                                    longest_unsunk)
+            # gather potential hits in column around start
+            self._vertical_hit_list(starting_row, starting_column,
+                                    longest_unsunk)
+        else:
+            # gather potential hits in column around start
+            self._vertical_hit_list(starting_row, starting_column,
+                                    longest_unsunk)
+            # gather potential hits in row around start
+            self._horizontal_hit_list(starting_row, starting_column,
+                                    longest_unsunk)
         if len(self._hit_list):
             return True
         else:
@@ -208,6 +266,7 @@ class Opponent:
             return self._guess_list[-1]
         else:
             return None
+
 
     # ------------Seeking Methods------------ #
     def _destroy_ship(self):
@@ -235,7 +294,10 @@ class Opponent:
 
         Currently uses a lattice grid for efficient searching.  This
         works by guessing only even columns with even rows and only odd
-        columns with odd rows.
+        columns with odd rows.  It also eliminates possibilities where
+        there aren't enough potential hits around a space.  This is
+        incomplete since it adds row and column possibilities together,
+        but it does narrow down the possibilities.
 
         Note: Currently will only work with even row lengths on the
         radar board.
@@ -248,13 +310,26 @@ class Opponent:
         # make column even
         column = random.randint(0, int((len(self.field_board[0]) / 2)) - 1)
         column = column * 2
-        # if row is odd, make column odd
-        if row % 2 != 0:
+        # if row is odd, make column odd (reverses with _guess_seed value)
+        if (row + self._guess_seed) % 2 != 0:
             column += 1
         if self.radar_board[row][column].guessed:
             # make a new guess if the space has already been guessed
             return self._seek_ships()
-        return row, column
+        # build hit list around proposed guess
+        self._build_hit_list(row, column)
+        # determine length of shortest remaining ship
+        ships_remaining = self.radar_fleet.ships_remaining
+        shortest_unsunk = min([len(ship) for ship in ships_remaining])
+        # check if there's room for the shortest remaining ship around
+        #   the proposed guess
+        if len(self._hit_list) + self.spare_hits >= shortest_unsunk:
+            self._hit_list.clear()
+            return row, column
+        else:
+            # if there isn't room, generate another guess
+            self._hit_list.clear()
+            return self._seek_ships()
 
     def make_guess(self):
         """

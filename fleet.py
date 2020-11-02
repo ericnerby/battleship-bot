@@ -43,3 +43,8 @@ class Fleet(list):
     def ships_remaining(self):
         """A list of all ships which have not been sunk"""
         return [ship for ship in self if not ship.sunk]
+    
+    @property
+    def ships_sunk(self):
+        """A list of all ships which have been sunk"""
+        return [ship for ship in self if ship.sunk]
