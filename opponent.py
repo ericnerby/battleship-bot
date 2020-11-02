@@ -232,17 +232,27 @@ class Opponent:
     def _seek_ships(self):
         """
         Return tuple of row and column coordinates for guesses.
-        
-        Note: Currently will only work with even row lengths.
+
+        Currently uses a lattice grid for efficient searching.  This
+        works by guessing only even columns with even rows and only odd
+        columns with odd rows.
+
+        Note: Currently will only work with even row lengths on the
+        radar board.
+
+        Returns
+        -------
+        two-tuple of int - row and column guess coordinates
         """
         row = random.randint(0, len(self.field_board) - 1)
         # make column even
-        column = random.randint(0, int((len(self.field_board[0]) / 2)))
+        column = random.randint(0, int((len(self.field_board[0]) / 2)) - 1)
         column = column * 2
         # if row is odd, make column odd
         if row % 2 != 0:
             column += 1
         if self.radar_board[row][column].guessed:
+            # make a new guess if the space has already been guessed
             return self._seek_ships()
         return row, column
 
@@ -264,10 +274,7 @@ class Opponent:
         if self._destroy_mode:
             row, column = self._destroy_ship()
         else:
-            row = random.randint(0, len(self.field_board) - 1)
-            column = random.randint(0, len(self.field_board[0]) - 1)
-        if self.radar_board[row][column].guessed:
-            return self.make_guess()
+            row, column = self._seek_ships()
         return row, column
     
     def take_guess_answer(self, row, column, hit):
