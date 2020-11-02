@@ -1,3 +1,16 @@
+"""
+Contains the Opponent and Turn classes.  The Opponent owns a radar
+board and field board and includes all the methods for randomly placing
+its ships and hunting for the player's ships.
+
+Classes
+-------
+Opponent
+    A class for the computer opponent in a game of Battleship
+Turn
+    Used by the Opponent class to keep track of its guesses
+"""
+
 import random
 
 from board import Board
@@ -19,6 +32,15 @@ class Opponent:
         a board for placing the opponent's ships and taking player guesses
     field_fleet : Fleet object
         a fleet containing the opponent's ships to track player hits
+    
+    Properties
+    ----------
+    total_hits : int
+        the number of hits made by the computer throughout the game
+    spare_hits : int
+        the number of hits made by computer and not tied to a sunken ship
+    last_guess : Turn object
+        the most recently made guess
     """
     def __init__(self):
         """Builds a new Opponent object. Takes no arguments."""
