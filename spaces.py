@@ -110,7 +110,7 @@ class FieldSpace(Space):
                 + self.location
                 + " since the space is already assigned a segment.")
         self._segment = segment
-    
+
     # ------------Interface Methods------------ #
     def take_guess(self):
         """

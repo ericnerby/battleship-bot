@@ -66,8 +66,7 @@ class Segment():
         """Return visual string representation for segment."""
         if self.hit:
             return self.string_rep_tup[1]
-        else:
-            return self.string_rep_tup[0]
+        return self.string_rep_tup[0]
 
     def __repr__(self):
         """Return a string identifying key attributes of segment"""

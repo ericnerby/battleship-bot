@@ -26,7 +26,7 @@ def convert_to_index(*args, zero_index=False):
             to zero-index based on zero_index argument.
     zero_index : boolean, optional, keyword-only | default: False
         indicates whether int or int convertible str values are already
-            zero-indexed.  
+            zero-indexed.
 
     Returns
     -------
@@ -83,7 +83,7 @@ def convert_from_index(number, destination_format='one'):
     str
         a user-friendly str version of the int in the given format.
     """
-    FORMAT_OPTIONS = {
+    format_options = {
         'lower': lambda num: alphabet[num],
         'upper': lambda num: alphabet[num].upper(),
         'zero': lambda num: str(num),
@@ -91,12 +91,11 @@ def convert_from_index(number, destination_format='one'):
     }
     if not isinstance(number, int):
         raise TypeError("'number' argument must be an integer.")
-    if destination_format in FORMAT_OPTIONS:
+    if destination_format in format_options:
         if (destination_format in {'upper', 'lower'}
                 and (number > len(alphabet) or number < 0)):
             raise ValueError(
                 "'number' must be 0-25 for 'upper' or 'lower' conversion.")
-        return FORMAT_OPTIONS[destination_format](number)
-    else:
-        raise ValueError(
-            f"'destination_format' must be one of: {FORMAT_OPTIONS.keys}.")
+        return format_options[destination_format](number)
+    raise ValueError(
+        f"'destination_format' must be one of: {format_options.keys}.")

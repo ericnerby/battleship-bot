@@ -86,7 +86,7 @@ def sleeper():
 def check_help_and_quit(user_input):
     """
     Check user input for help or quit command and execute if present.
-    
+
     If the help menu is called, the function returns True.  If the quit
     command is called, the program closes in this function.  Otherwise,
     the function returns False.
@@ -131,9 +131,15 @@ def check_for_win():
 
 
 def check_for_sunken_ship():
-    """Ask player if the computer sunk one of their ships."""
+    """
+    Ask player if the computer sunk one of their ships.
+
+    Returns
+    -------
+    Ship object or None - The ship sunk by the guess or None
+    """
     possible_sunk_list = opponent.possible_sunk()
-    if len(possible_sunk_list):
+    if len(possible_sunk_list) > 0:
         print("Did I sink one of your ships?")
         for index, ship in enumerate(possible_sunk_list, 1):
             print("{}. {}".format(index, ship))
@@ -149,14 +155,13 @@ def check_for_sunken_ship():
                 ship_index = int(ship_index.group())
             if ship_index == 0:
                 return None
-            elif ship_index > len(possible_sunk_list):
+            if ship_index > len(possible_sunk_list):
                 print("{} is not in the above list. Please try again.")
                 sleeper()
                 return check_for_sunken_ship()
-            else:
-                possible_sunk_list[ship_index - 1].sunk = True
-                opponent.take_sunk_answer(possible_sunk_list[ship_index - 1])
-                return possible_sunk_list[ship_index - 1]
+            possible_sunk_list[ship_index - 1].sunk = True
+            opponent.take_sunk_answer(possible_sunk_list[ship_index - 1])
+            return possible_sunk_list[ship_index - 1]
 
 
 def player_turn():
@@ -213,7 +218,7 @@ def player_turn():
 def opponent_turn(existing_row=None, existing_column=None):
     """
     Make guess, prompt player, and mark guess.
-    
+
     Parameters
     ----------
         existing_row : int, optional | default: None
@@ -245,7 +250,7 @@ def opponent_turn(existing_row=None, existing_column=None):
 def game_loop(starting_player):
     """
     Main loop of the game calls player and opponent turns until game over.
-    
+
     Each cycle through the loop switches between player and opponent
     turns and checks for a winner.  When there's a winner, it will be
     announced, the opponent's field displayed, and the loop will break.
@@ -292,7 +297,7 @@ def main():
 
 
 if __name__ == '__main__':
-    """If app is the main module, create Player and run main()."""
+    # If app is the main module, create Player and run main().
     opponent = Opponent()
     user_name = None
     clear()
@@ -301,7 +306,7 @@ if __name__ == '__main__':
         user_name = input(
             "Before we get started, could you please tell me your name? ")
         check_help_and_quit(user_name)
-        if not len(user_name):
+        if len(user_name) == 0:
             user_name = None
     player = Player(user_name)
     main()

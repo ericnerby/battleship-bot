@@ -111,12 +111,11 @@ class Ship():
                                             self.vertical_string_reps):
                 segment.string_rep_tup = segment_rep
             return self.orientation
-        elif self.orientation == 'v':
-            self.orientation = 'h'
-            for segment, segment_rep in zip(self.segments,
-                                            self.horizontal_string_reps):
-                segment.string_rep_tup = segment_rep
-            return self.orientation
+        self.orientation = 'h'
+        for segment, segment_rep in zip(self.segments,
+                                        self.horizontal_string_reps):
+            segment.string_rep_tup = segment_rep
+        return self.orientation
 
     # ------------Properties------------ #
     @property
@@ -148,7 +147,7 @@ class Ship():
     def __len__(self):
         """Return length of 'segments' attribute for ship length."""
         return len(self.segments)
-    
+
     def __str__(self):
         """Return ship_type when printing ship."""
         return self.ship_type

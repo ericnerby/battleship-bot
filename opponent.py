@@ -92,7 +92,7 @@ class Opponent:
                 try:
                     if (column + index) >= len(self.field_board[row]):
                         return False
-                    elif self.field_board[row][column + index].segment:
+                    if self.field_board[row][column + index].segment:
                         return False
                 except IndexError:
                     print(
@@ -102,7 +102,7 @@ class Opponent:
                 try:
                     if (row + index) >= len(self.field_board):
                         return False
-                    elif self.field_board[row + index][column].segment:
+                    if self.field_board[row + index][column].segment:
                         return False
                 except IndexError:
                     print(
@@ -179,7 +179,7 @@ class Opponent:
                             starting_column + index]
             if space.hit == 1:
                 break
-            elif space.hit == 0:
+            if space.hit == 0:
                 self._hit_list.append((starting_row,
                                         starting_column + index))
         # gather potential hits in row to left of start
@@ -190,7 +190,7 @@ class Opponent:
                             starting_column - index]
             if space.hit == 1:
                 break
-            elif space.hit == 0:
+            if space.hit == 0:
                 self._hit_list.append((starting_row,
                                         starting_column - index))
 
@@ -206,7 +206,7 @@ class Opponent:
                                      starting_column]
             if space.hit == 1:
                 break
-            elif space.hit == 0:
+            if space.hit == 0:
                 self._hit_list.append((starting_row + index,
                                         starting_column))
         # gather potential hits in column above start
@@ -217,7 +217,7 @@ class Opponent:
                                      starting_column]
             if space.hit == 1:
                 break
-            elif space.hit == 0:
+            if space.hit == 0:
                 self._hit_list.append((starting_row - index,
                                        starting_column))
 
@@ -245,7 +245,7 @@ class Opponent:
                     # when a sunk guess appears, this means the starting
                     #   point has passed.
                     break
-                elif guess.hit:
+                if guess.hit:
                     starting_point = guess
             if not starting_point:
                 self._destroy_mode = False
@@ -270,10 +270,9 @@ class Opponent:
             # gather potential hits in row around start
             self._horizontal_hit_list(starting_row, starting_column,
                                     longest_unsunk)
-        if len(self._hit_list):
+        if len(self._hit_list) > 0:
             return True
-        else:
-            return False
+        return False
 
     @property
     def last_guess(self):
@@ -284,10 +283,9 @@ class Opponent:
         -------
         Turn object or None - None is returned if no guesses have been made
         """
-        if len(self._guess_list):
+        if len(self._guess_list) > 0:
             return self._guess_list[-1]
-        else:
-            return None
+        return None
 
 
     # ------------Seeking Methods------------ #
@@ -300,15 +298,14 @@ class Opponent:
             self._hit_list.clear()
             self._destroy_mode = False
             return self.make_guess()
-        if len(self._hit_list):
+        if len(self._hit_list) > 0:
             return self._hit_list.pop(0)
+        # If there are no items in _hit_list, call method to build list
+        if self._build_hit_list():
+            return self._destroy_ship()
         else:
-            # If there are no items in _hit_list, call method to build list
-            if self._build_hit_list():
-                return self._destroy_ship()
-            else:
-                self._destroy_mode = False
-                return self.make_guess()
+            self._destroy_mode = False
+            return self.make_guess()
 
     def _seek_ships(self):
         """
@@ -348,10 +345,9 @@ class Opponent:
         if len(self._hit_list) + self.spare_hits >= shortest_unsunk:
             self._hit_list.clear()
             return row, column
-        else:
-            # if there isn't room, generate another guess
-            self._hit_list.clear()
-            return self._seek_ships()
+        # if there isn't room, generate another guess
+        self._hit_list.clear()
+        return self._seek_ships()
 
     def make_guess(self):
         """
@@ -466,7 +462,7 @@ class Turn:
     def sunk(self, ship=None):
         """
         Set sunk property
-    
+
         Parameters
         ----------
         ship : Ship object or None, optional | default: None
@@ -480,7 +476,4 @@ class Turn:
     @property
     def hit(self):
         """Return boolean indicating whether guess was a hit."""
-        if self.space.hit == 2:
-            return True
-        else:
-            return False
+        return self.space.hit == 2
