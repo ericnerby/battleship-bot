@@ -32,7 +32,7 @@ class Opponent:
         a board for placing the opponent's ships and taking player guesses
     field_fleet : Fleet object
         a fleet containing the opponent's ships to track player hits
-    
+
     Properties
     ----------
     total_hits : int
@@ -119,7 +119,7 @@ class Opponent:
             if guess.hit:
                 total += 1
         return total
-    
+
     @property
     def spare_hits(self):
         """Return number of hits not accounted for in sunk ships."""
@@ -166,7 +166,7 @@ class Opponent:
             longest_possible = unaccounted_hits
         return [ship for ship in self.radar_fleet.ships_remaining
                  if len(ship) <= longest_possible]
-    
+
     def _horizontal_hit_list(self, starting_row, starting_column,
                              longest_unsunk):
         """Add potential hits right and left of starting point."""
@@ -224,7 +224,7 @@ class Opponent:
     def _build_hit_list(self, starting_row=None, starting_column=None):
         """
         Build a hit list to assist the _destroy_ship method.
-        
+
         Parameters
         ----------
         starting_row : int, optional | default: None
@@ -274,12 +274,12 @@ class Opponent:
             return True
         else:
             return False
-    
+
     @property
     def last_guess(self):
         """
         Return the last guess made by the computer.
-        
+
         Returns
         -------
         Turn object or None - None is returned if no guesses have been made
@@ -309,7 +309,7 @@ class Opponent:
             else:
                 self._destroy_mode = False
                 return self.make_guess()
-    
+
     def _seek_ships(self):
         """
         Return tuple of row and column coordinates for guesses.
@@ -373,7 +373,7 @@ class Opponent:
         else:
             row, column = self._seek_ships()
         return row, column
-    
+
     def take_guess_answer(self, row, column, hit):
         """
         Take the result of a guess to mark it down on radar.
@@ -398,10 +398,10 @@ class Opponent:
         else:
             self._guess_list.append(Turn(self.radar_board[row][column],
                                     row, column))
-    
+
     def take_sunk_answer(self, ship):
         """Mark a ship sunk on the previous guess.
-        
+
         Parameters
         ----------
         ship : Ship object or None
@@ -440,16 +440,28 @@ class Turn:
         indicates whether the guess was a hit on the turn
     """
     def __init__(self, space, row, column):
+        """
+        Build a Turn object.
+
+        Parameters
+        ----------
+        space : Space object
+            the space associated with the guess
+        row : int
+            the row associated with the guess
+        column : int
+            the column associated with the guess
+        """
         self.space = space
         self.row = row
         self.column = column
         self._sunk = None
-    
+
     @property
     def sunk(self):
         """Return sunk property"""
         return self._sunk
-    
+
     @sunk.setter
     def sunk(self, ship=None):
         """
