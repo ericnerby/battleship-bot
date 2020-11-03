@@ -299,14 +299,16 @@ def main():
 if __name__ == '__main__':
     # If app is the main module, create Player and run main().
     opponent = Opponent()
-    user_name = None
     clear()
     print(WELCOME_SCREEN)
+    user_name = None
     while not user_name:
         user_name = input(
             "Before we get started, could you please tell me your name? ")
-        check_help_and_quit(user_name)
-        if len(user_name) == 0:
+        if check_help_and_quit(user_name):
             user_name = None
+        if user_name:
+            if len(user_name) == 0:
+                user_name = None
     player = Player(user_name)
     main()
