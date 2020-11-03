@@ -8,7 +8,7 @@ That experience is often lacking when you play Battleship against a computer. Yo
 
 I wanted to do something different. This is a command line app that plays a game of Battleship with you. You set up half of your board just like you were playing against another human, and the game doesn't know where anything is until you respond to its guesses (and given the possibility of a ship being sunk, the game will prompt you whether a ship was sunk when the computer gets a hit).
 
-This project is still a work in progress. The game will run, and the computer can technically win, but it's not very smart yet, so it would be really difficult for it to win. My next to-do is to continue making the computer opponent more intelligent so it has a fighting chance against the player.
+This project is still a work in progress. The game runs, and it will make guesses around a hit until confirmation of a sunken ship. Its main weakness right now is dealing with clustered ships. It doesn't currently follow up on stray hits or know how to determine to which player's ship the hits belong.
 
 ## Getting the App to Run
 
@@ -52,3 +52,17 @@ I spent most of my time up front developing modules for `ships` (and their `segm
 Initially, I thought the board would be an *Ordered Dictionary* of *Ordered Dictionaries* so the spaces could be found in `whatever_board_instance['letter'][number]`, but as I started writing the `Opponent` class, this made everything way too complicated. Now instead, it's a simple *List* of *Lists*, and the `gameconversions` module takes care of converting between zero-indexed positions for the computer and the more familiar A1-J10 coordinates for the player.
 
 Once all those classes were constructed, I started building the main landing page, `app.py`. This is all more functional programming than the more object-oriented programming found in the modules, and this is where the help menu, player and computer turns, and main loop of the app are found.
+
+### Continued Development
+
+#### Some recent improvements I've made:
+* The Opponent class now has additional methods that seek out the rest of a ship when a hit is made.
+* Random guesses are now made in an every other space pattern (A1, A3, B2, B4, etc.) for greater efficiency.
+* Random guesses are eliminated based on whether there would be room for the smallest remaining ship around the space.
+* The possible sunken ship list presented to the user is further narrowed down by how many unaccounted hits are present (calculated by subtracting the total length of sunken ships from the total number of hits).
+
+#### Some improvements I still want to make:
+1. Right now, the hit list generator (which aids in finding the rest of a ship after a hit and eliminates possible guesses) adds up both vertical and horizontal possibilities. This means that a space could be listed as a possible guess when there is in fact not room for a ship in that area.
+1. Clustered ships can confuse the opponent. It doens't currently know which hits go with which ship and it doesn't go back and seek around unaccounted for hits. For example, if it scores a hit on the Carrier because it's adjacent to the Battleship, and then sinks the Battleship, it doesn't know to go back and seek around that extra hit.
+1. Right now, there is a 3 second delay to allow for reading messages after guesses on the player's turn, and no confirmation after player responses on the computer opponent's turn. There isn't currently a way to confirm or review the previous action, which could cause some issues if there's a mistyped command.
+1. Add machine learning to make random guesses dependent on probability of a ship segment in that space.
