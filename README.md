@@ -63,6 +63,6 @@ Once all those classes were constructed, I started building the main landing pag
 
 #### Some improvements I still want to make:
 1. Right now, the hit list generator (which aids in finding the rest of a ship after a hit and eliminates possible guesses) adds up both vertical and horizontal possibilities. This means that a space could be listed as a possible guess when there is in fact not room for a ship in that area.
-1. Clustered ships can confuse the opponent. It doens't currently know which hits go with which ship and it doesn't go back and seek around unaccounted for hits. For example, if it scores a hit on the Carrier because it's adjacent to the Battleship, and then sinks the Battleship, it doesn't know to go back and seek around that extra hit.
+1. Clustered ships can confuse the opponent. It doesn't currently know which hits go with which ship and it doesn't go back and seek around unaccounted for hits. For example, if it scores a hit on the Carrier because it's adjacent to the Battleship, and then sinks the Battleship, it doesn't know to go back and seek around that extra hit.
 1. Right now, there is a 3 second delay to allow for reading messages after guesses on the player's turn, and no confirmation after player responses on the computer opponent's turn. There isn't currently a way to confirm or review the previous action, which could cause some issues if there's a mistyped command.
 1. Add machine learning to make random guesses dependent on probability of a ship segment in that space.
