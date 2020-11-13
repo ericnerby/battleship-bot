@@ -39,10 +39,12 @@ https://docs.google.com/spreadsheets/d/1FnvfjBafRl1t-cBGJan1N3Vp_3ucJnNYCR-9fpPn
 ## Project Requirements
 
 This project meets the following requirements for the Code Louisville Python Course:
-* Utilizes a master loop allowing for repeated interactions and the option to quit the application at any time.
-* Many classes are created and instantiated throughout, including Ship, Board, Space, and Opponent objects.
-* Numerous functions/methods are included and called. Many of these functions have return values used by other parts of the application.
-* Regular expressions are used to validate user guesses and get them ready for conversion
+1. Utilizes a master loop allowing for repeated interactions and the option to quit the application at any time.
+1. Many classes are created and instantiated throughout, including Ship, Board, Space, and Opponent objects.
+1. Numerous functions/methods are included and called. Many of these functions have return values used by other parts of the application.
+1. Regular expressions are used to validate user guesses and get them ready for conversion.
+1. *Lists* are instantiated, populated, and used in the `fleet` (Fleet is actually a subclass of *list*), `board`, and `opponent` modules.
+1. The gameconversions module converts back and forth between user-friendly locations ("F", 6) and computer-friendly, zero-indexed locations (5, 5).
 * Comments appear where clarification may be needed or to break up sections of code, and docstrings are applied throughout.
 
 ## Project Structure and Development
